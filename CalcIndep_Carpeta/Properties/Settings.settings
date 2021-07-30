@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CalcIndep_Carpeta.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PathPacientes" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\Ariamevadb-svr\va_data$\Pacientes</Value>
+    </Setting>
+    <Setting Name="PathIsos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\FISICA0\isos</Value>
+    </Setting>
+    <Setting Name="PathCopiaIsos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\FISICA0\isos\Copias de patmove</Value>
+    </Setting>
+    <Setting Name="PathPrograma" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\ARIAMEVADB-SVR\va_data$\Calculo Independiente</Value>
+    </Setting>
+    <Setting Name="PathDCMRP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\ARIAMEVADB-SVR\va_data$\Export</Value>
+    </Setting>
+    <Setting Name="PathDCMEquipo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\Fisica0\dicom rt</Value>
+    </Setting>
+    <Setting Name="PathDCMEquipo2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\FISICA0\equipo2\DICOM RT</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
