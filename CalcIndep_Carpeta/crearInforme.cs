@@ -32,27 +32,23 @@ namespace CalcIndep_Carpeta
             if (_hayContext)
             {
 
-                if (Clipboard.ContainsImage())
+                if (obtenerImagenes(paciente))
                 {
+                    exportarAPdf(paciente, plan, estructuras);
+                }
+                else if (Clipboard.ContainsImage())
+                {
+                    MessageBox.Show("No se encuentran las capturas.\nSe procederá con la impresión de pantalla");
                     imagen = new Bitmap(Clipboard.GetImage());
                     exportarAPdf(paciente, plan, imagen, estructuras);
                 }
                 else
                 {
-
-                    MessageBox.Show("No se encuentra la impresión de pantalla");
+                    MessageBox.Show("No se encuentran las capturas ni la impresión de pantalla");
                 }
             }
             else
             {
-                /*OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "Abrir archivo";
-                openFileDialog.Filter = "Archivos png(.png)|*.png|All Files (*.*)|*.*";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    imagen = new Bitmap(openFileDialog.FileName);
-                    exportarAPdf(paciente, plan, imagen, estructuras);
-                }*/
                 exportarAPdf(paciente, plan, estructuras);
             }
 
@@ -518,12 +514,12 @@ namespace CalcIndep_Carpeta
 
         public static bool obtenerImagenes(Patient paciente)
         {
-            List<string> imagenes = Directory.GetFiles("Imagenes").Where(f=>f.Contains(paciente.Id)).ToList();
-            if (imagenes.Count==3)
+            List<string> imagenes = Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)).ToList();
+            if (imagenes.Count == 3)
             {
                 File.Move(imagenes[0], paciente.Id + "_axial.png");
-                File.Move(imagenes[1], paciente.Id + "_coronal.png");
-                File.Move(imagenes[2], paciente.Id + "_sagital.png");
+                File.Move(imagenes[1], paciente.Id + "_sagital.png");
+                File.Move(imagenes[2], paciente.Id + "_coronal.png");
                 return true;
             }
             else
@@ -543,8 +539,8 @@ namespace CalcIndep_Carpeta
                 return true;
             }
         }
-        
-        public static Course Curso (Patient paciente, PlanningItem plan)
+
+        public static Course Curso(Patient paciente, PlanningItem plan)
         {
             if (plan is PlanSetup)
             {
@@ -560,7 +556,7 @@ namespace CalcIndep_Carpeta
 
         public static Paragraph PrimerParrafo(Patient paciente, PlanSetup plan)
         {
-            
+
             if (plan.Beams.First().MLCPlanType == MLCPlanType.DoseDynamic && plan.Beams.First().ControlPoints.Count() > 30)
             {
                 textoTipoTratamiento = "de intensidad modulada (IMRT)";
@@ -587,7 +583,7 @@ namespace CalcIndep_Carpeta
         {
             Paragraph segundoParrafo = new Paragraph();
             segundoParrafo.Style = "Texto";
-            segundoParrafo.AddText("En la Figura 2, se muestran las vistas sagital y coronal reconstruidas a partir de los cortes tomográficos axiales.");
+            segundoParrafo.AddText("En la Figura 2, se muestran las vistas coronal y sagital reconstruidas a partir de los cortes tomográficos axiales.");
             return segundoParrafo;
         }
 
@@ -746,54 +742,45 @@ namespace CalcIndep_Carpeta
             parrafoLogo.Format.Alignment = ParagraphAlignment.Right;
             var Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
             Logo.Height = 70;
-            seccion.AddParagraph("Centro Médico Mevaterapia", "Titulo");
+            seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
 
 
             seccion.AddParagraph("Informe Físico del tratamiento realizado", "Titulo");
             seccion.Add(PrimerParrafo(paciente, plan));
-            if (obtenerImagenes(imagen))
-            {
-                var axial = seccion.AddImage("axial.png");
-                axial.Width = new Unit(14, UnitType.Centimeter);
-                axial.Left = MigraDoc.DocumentObjectModel.Shapes.ShapePosition.Center;
+            var axial = seccion.AddImage("axial.png");
+            axial.Width = new Unit(14, UnitType.Centimeter);
+            axial.Left = MigraDoc.DocumentObjectModel.Shapes.ShapePosition.Center;
 
-                seccion.AddParagraph("Figura 1. Corte axial de la lesión", "Texto Centro Cursiva");
-                seccion.Add(SegundoParrafo());
+            seccion.AddParagraph("Figura 1. Corte axial de la lesión", "Texto Centro Cursiva");
+            seccion.Add(SegundoParrafo());
 
-                MigraDoc.DocumentObjectModel.Tables.Table imagenes = new MigraDoc.DocumentObjectModel.Tables.Table();
-                imagenes.AddColumn(new Unit(9, UnitType.Centimeter));
-                imagenes.AddColumn(new Unit(9, UnitType.Centimeter));
-                imagenes.AddRow();
-                imagenes.Rows.LeftIndent = "1cm";
-                var coronal = imagenes.Rows[0].Cells[0].AddImage("coronal.png");
-                coronal.Width = new Unit(8.5, UnitType.Centimeter);
-                var sagital = imagenes.Rows[0].Cells[1].AddImage("sagital.png");
-                sagital.Width = new Unit(8.5, UnitType.Centimeter);
-                seccion.Add(imagenes);
-                seccion.AddParagraph("Figura 2. Vista sagital y coronal reconstruidas en el plano isocentrico", "Texto Centro Cursiva");
-                seccion.Add(TercerParrafo());
-                //Graficar.grafico(plan, estructuras);
-                var DVH = seccion.AddImage("DVH.png");
-                DVH.Width = new Unit(14, UnitType.Centimeter);
-                DVH.Height = new Unit(7, UnitType.Centimeter);
-                DVH.Left = MigraDoc.DocumentObjectModel.Shapes.ShapePosition.Center;
-                seccion.AddParagraph("Figura 3. Histograma Dosis-Volumen acumulado", "Texto Centro Cursiva");
-                seccion.Add(TablaDVH(plan, estructuras));
-                seccion.AddParagraph("Tabla 1. Referencia de volúmenes en histograma dosis-volumen, valores absolutos de dosis máxima, media  y mínima", "Texto Centro Cursiva");
+            MigraDoc.DocumentObjectModel.Tables.Table imagenes = new MigraDoc.DocumentObjectModel.Tables.Table();
+            imagenes.AddColumn(new Unit(9, UnitType.Centimeter));
+            imagenes.AddColumn(new Unit(9, UnitType.Centimeter));
+            imagenes.AddRow();
+            imagenes.Rows.LeftIndent = "1cm";
+            var coronal = imagenes.Rows[0].Cells[0].AddImage("coronal.png");
+            coronal.Width = new Unit(8.5, UnitType.Centimeter);
+            var sagital = imagenes.Rows[0].Cells[1].AddImage("sagital.png");
+            sagital.Width = new Unit(8.5, UnitType.Centimeter);
+            seccion.Add(imagenes);
+            seccion.AddParagraph("Figura 2. Vista coronal y sagital reconstruidas en el plano isocentrico", "Texto Centro Cursiva");
+            seccion.Add(TercerParrafo());
+            //Graficar.grafico(plan, estructuras);
+            var DVH = seccion.AddImage("DVH.png");
+            DVH.Width = new Unit(14, UnitType.Centimeter);
+            DVH.Height = new Unit(7, UnitType.Centimeter);
+            DVH.Left = MigraDoc.DocumentObjectModel.Shapes.ShapePosition.Center;
+            seccion.AddParagraph("Figura 3. Histograma Dosis-Volumen acumulado", "Texto Centro Cursiva");
+            seccion.Add(TablaDVH(plan, estructuras));
+            seccion.AddParagraph("Tabla 1. Referencia de volúmenes en histograma dosis-volumen, valores absolutos de dosis máxima, media  y mínima", "Texto Centro Cursiva");
 
-                seccion.Add(CuartoParrafo());
-                seccion.Add(TablaCampos(plan));
-                seccion.AddParagraph("Tabla 2. Campos de tratamiento y características de los mismos.", "Texto Centro Cursiva");
+            seccion.Add(CuartoParrafo());
+            seccion.Add(TablaCampos(plan));
+            seccion.AddParagraph("Tabla 2. Campos de tratamiento y características de los mismos.", "Texto Centro Cursiva");
 
-                informe.Add(seccion);
-                return informe;
-            }
-            else
-            {
-                MessageBox.Show("No se pudieron obtener las imágenes.\nRealizar de nuevo la impresión de pantalla");
-                return null;
-            }
-
+            informe.Add(seccion);
+            return informe;
         }
 
         public static Document informe(Patient paciente, PlanSetup plan, List<Structure> estructuras)
@@ -806,7 +793,7 @@ namespace CalcIndep_Carpeta
             parrafoLogo.Format.Alignment = ParagraphAlignment.Right;
             var Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
             Logo.Height = 70;
-            seccion.AddParagraph("Centro Médico Mevaterapia", "Titulo");
+            seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
 
 
             seccion.AddParagraph("Informe Físico del tratamiento realizado", "Titulo");
@@ -830,7 +817,7 @@ namespace CalcIndep_Carpeta
                 var sagital = imagenes.Rows[0].Cells[1].AddImage(paciente.Id + "_sagital.png");
                 sagital.Width = new Unit(8.5, UnitType.Centimeter);
                 seccion.Add(imagenes);
-                seccion.AddParagraph("Figura 2. Vista sagital y coronal reconstruidas en el plano isocentrico", "Texto Centro Cursiva");
+                seccion.AddParagraph("Figura 2. Vista coronal y sagital reconstruidas en el plano isocentrico", "Texto Centro Cursiva");
                 seccion.Add(TercerParrafo());
                 //Graficar.grafico(plan, estructuras);
                 var DVH = seccion.AddImage("DVH.png");
@@ -900,5 +887,5 @@ namespace CalcIndep_Carpeta
         #endregion
     }
 
-    
+
 }

@@ -88,7 +88,7 @@ namespace CalcIndep_Carpeta
             }
             else
             {
-                grafico.SaveImage(paciente.Id + "_DVH.png", ChartImageFormat.Png);
+                grafico.SaveImage(Properties.Settings.Default.PathPrograma + @"\Imagenes\" + paciente.Id + "_DVH.png", ChartImageFormat.Png);
             }
             
             return grafico;
