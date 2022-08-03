@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
 
+
 namespace CalcIndep_Carpeta
 {
     public static class Graficar
