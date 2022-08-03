@@ -263,11 +263,6 @@ namespace CalcIndep_Carpeta
             System.Environment.Exit(1);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button_PPF_Click(object sender, EventArgs e)
         {
             if (plan is PlanSetup)
@@ -389,6 +384,88 @@ namespace CalcIndep_Carpeta
             {
 
             }
+        }
+
+        private void BT_GuardarImagenes_Click(object sender, EventArgs e)
+        {
+            
+            if (plan is PlanSetup)
+            {
+                string Equipo = NombreEquipo((PlanSetup)plan);
+                if (Equipo == null)
+                {
+                    MessageBox.Show("No se pueden enviar imágenes a ese equipo");
+                }
+                if (((PlanSetup)plan).Beams.Any(b => b.ReferenceImage == null))
+                {
+                    MessageBox.Show("Una o más imágenes no tiene generadas las DRR. Corregir");
+                }
+                else
+                {
+                    string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
+                    int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                    MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
+                }
+            }
+            else
+            {
+                foreach (PlanSetup planSetup in ((PlanSum)plan).PlanSetups)
+                {
+                    string Equipo = NombreEquipo((PlanSetup)plan);
+                    if (Equipo == null)
+                    {
+                        MessageBox.Show("No se pueden enviar imágenes a ese equipo");
+                    }
+                    
+                    if (((PlanSetup)plan).Beams.Any(b=>b.ReferenceImage==null))
+                    {
+                        MessageBox.Show("Una o más imágenes no tiene generadas las DRR. Corregir");
+                    }
+                    else
+                    {
+                        string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
+                        int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                        MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
+                    }
+                }
+            }
+            /*else if (MessageBox.Show("Se encontraron " + imagenes.Count + " imagenes.\n¿Guardar en carpeta de equipo?","Guardar imágenes", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
+                foreach (string imagen in imagenes)
+                {
+                    File.Move(imagen, path + @"\Imagen_" + imagenes.IndexOf(imagen) + ".png");
+                }
+            }*/
+        }
+
+        private List<string> ObtenerImagenesPaciente(Patient paciente)
+        {
+            return Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)).ToList();
+        }
+        private string NombreEquipo(PlanSetup plan)
+        {
+            if (plan.Beams.First().TreatmentUnit.Id == "Equipo1")
+            {
+                return "Equipo1";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX")
+            {
+                return "Equipo2";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "2100CMLC")
+            {
+                return "Equipo3";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
+            {
+                return "Equipo4";
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 }

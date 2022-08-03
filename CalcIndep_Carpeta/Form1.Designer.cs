@@ -30,7 +30,7 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.button_Informe = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BT_GuardarImagenes = new System.Windows.Forms.Button();
             this.button_PPF = new System.Windows.Forms.Button();
             this.button_PatMove = new System.Windows.Forms.Button();
             this.button_CI = new System.Windows.Forms.Button();
@@ -53,7 +53,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.button_Informe);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.BT_GuardarImagenes);
             this.panel1.Controls.Add(this.button_PPF);
             this.panel1.Controls.Add(this.button_PatMove);
             this.panel1.Controls.Add(this.button_CI);
@@ -72,16 +72,15 @@
             this.button_Informe.UseVisualStyleBackColor = true;
             this.button_Informe.Click += new System.EventHandler(this.button_Informe_Click);
             // 
-            // button1
+            // BT_GuardarImagenes
             // 
-            this.button1.Location = new System.Drawing.Point(3, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Armar Carpeta";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.BT_GuardarImagenes.Location = new System.Drawing.Point(3, 89);
+            this.BT_GuardarImagenes.Name = "BT_GuardarImagenes";
+            this.BT_GuardarImagenes.Size = new System.Drawing.Size(141, 23);
+            this.BT_GuardarImagenes.TabIndex = 4;
+            this.BT_GuardarImagenes.Text = "Guardar Imagenes";
+            this.BT_GuardarImagenes.UseVisualStyleBackColor = true;
+            this.BT_GuardarImagenes.Click += new System.EventHandler(this.BT_GuardarImagenes_Click);
             // 
             // button_PPF
             // 
@@ -257,7 +256,7 @@
         private System.Windows.Forms.Button button_PPF;
         private System.Windows.Forms.Button button_PatMove;
         private System.Windows.Forms.Button button_Informe;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BT_GuardarImagenes;
         private System.Windows.Forms.Button Button_Configurar;
     }
 }

@@ -85,7 +85,7 @@ namespace CalcIndep_Carpeta.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\\\Fisica0\\dicom rt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\equipo3\\DICOM RT\\1 - Inicios")]
         public string PathDCMEquipo {
             get {
                 return ((string)(this["PathDCMEquipo"]));
@@ -97,13 +97,25 @@ namespace CalcIndep_Carpeta.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\equipo2\\DICOM RT")]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\equipo2\\DICOM RT\\1 - Inicios")]
         public string PathDCMEquipo2 {
             get {
                 return ((string)(this["PathDCMEquipo2"]));
             }
             set {
                 this["PathDCMEquipo2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\centro de datos2018\\000_Centro de Datos 2021\\Pacientes DRRs")]
+        public string PathImagenesPacientes {
+            get {
+                return ((string)(this["PathImagenesPacientes"]));
+            }
+            set {
+                this["PathImagenesPacientes"] = value;
             }
         }
     }

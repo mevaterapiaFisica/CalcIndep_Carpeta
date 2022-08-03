@@ -18,10 +18,13 @@
       <Value Profile="(Default)">\\ARIAMEVADB-SVR\va_data$\Export</Value>
     </Setting>
     <Setting Name="PathDCMEquipo" Type="System.String" Scope="User">
-      <Value Profile="(Default)">\\Fisica0\dicom rt</Value>
+      <Value Profile="(Default)">\\FISICA0\equipo3\DICOM RT\1 - Inicios</Value>
     </Setting>
     <Setting Name="PathDCMEquipo2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">\\FISICA0\equipo2\DICOM RT</Value>
+      <Value Profile="(Default)">\\FISICA0\equipo2\DICOM RT\1 - Inicios</Value>
+    </Setting>
+    <Setting Name="PathImagenesPacientes" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\FISICA0\centro de datos2018\000_Centro de Datos 2021\Pacientes DRRs</Value>
     </Setting>
   </Settings>
 </SettingsFile>

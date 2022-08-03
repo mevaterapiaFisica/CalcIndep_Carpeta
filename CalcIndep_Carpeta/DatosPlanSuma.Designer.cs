@@ -107,7 +107,8 @@
             "VMAT",
             "3D",
             "SRS",
-            "SBRT"});
+            "SBRT",
+            "IGRT"});
             this.CB_TipoTratamiento.Location = new System.Drawing.Point(139, 15);
             this.CB_TipoTratamiento.Name = "CB_TipoTratamiento";
             this.CB_TipoTratamiento.Size = new System.Drawing.Size(122, 21);

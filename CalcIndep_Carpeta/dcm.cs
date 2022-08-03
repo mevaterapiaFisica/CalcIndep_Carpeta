@@ -71,6 +71,7 @@ namespace CalcIndep_Carpeta
             {
                 //DATOS
                 string nombre = objeto.FindFirst("00100010").DData.ToString();
+                nombre = nombre.Replace("??", "Ñ");
                 string[] aux = nombre.Split('^');
                 //Dcm dcm = new Dcm();
                 Apellido = aux[0];
@@ -116,7 +117,7 @@ namespace CalcIndep_Carpeta
             return "No se encontró coincidencia";
         }
 
-        public static bool moverDCM(Patient paciente, PlanSetup plan, bool esPlanSuma)
+        public static bool moverDCM(Patient paciente, PlanSetup plan, bool esPlanSuma, bool vieneDeEq1oEq4=false, string equipoOrigen=null, string equipoDestino=null)
         {
             string path = obtenerDCM(paciente, plan);
             if (path != "No se encontró coincidencia")
@@ -137,6 +138,17 @@ namespace CalcIndep_Carpeta
                 else if (plan.Beams.First().TreatmentUnit.Id== "Equipo 2 6EX")
                 {
                     pathPaciente = Properties.Settings.Default.PathDCMEquipo2 + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
+                }
+                else if (vieneDeEq1oEq4)
+                {
+                    if (equipoDestino=="2100CMLC")
+                    {
+                        pathPaciente = Properties.Settings.Default.PathDCMEquipo + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida + " (" + equipoOrigen + ")";
+                    }
+                    else if (equipoDestino == "Equipo 2 6EX")
+                    {
+                        pathPaciente = Properties.Settings.Default.PathDCMEquipo2 + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida + " (" + equipoOrigen + ")";
+                    }
                 }
                 IO.crearCarpeta(pathPaciente);
                 if (esPlanSuma)

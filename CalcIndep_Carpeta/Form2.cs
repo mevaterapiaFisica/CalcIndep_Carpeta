@@ -337,8 +337,12 @@ namespace CalcIndep_Carpeta
 
                         for (int l = 0; l < 60; l++)
                         {
-                            int Lx2 = 200 + (int)Leafs[0, 59 - l];
-                            int Lx1 = 200 + (int)Leafs[1, 59 - l];
+                            //int Lx2 = 200 + (int)Leafs[0, 59 - l];
+                            //int Lx1 = 200 + (int)Leafs[1, 59 - l];
+
+                            int Lx2 = Math.Max(Math.Min(200 + (int)Leafs[0, 59 - l],400),0);
+                            int Lx1 = Math.Max(Math.Min(200 + (int)Leafs[1, 59 - l],400),0);
+
                             int width = 5;
                             if (l < 10 | l > 49)
                             {

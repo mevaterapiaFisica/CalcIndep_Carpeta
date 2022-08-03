@@ -18,13 +18,13 @@ namespace CalcIndep_Carpeta
         PlanSetup plan;
         List<Beam> camposList = new List<Beam>();
         BindingList<Beam> campos = new BindingList<Beam>();
-			bool esPlanSuma = false;					
+        bool esPlanSuma = false;
         public OrdenCampos(Patient _paciente, PlanSetup _plan, bool _esPlanSuma)
         {
             InitializeComponent();
             paciente = _paciente;
             plan = _plan;
-			esPlanSuma = _esPlanSuma;						 
+            esPlanSuma = _esPlanSuma;
             Label_Plan.Text = plan.Id;
             camposList = crearListaDeCampos(plan);
             campos = new BindingList<Beam>(camposList);
@@ -52,7 +52,7 @@ namespace CalcIndep_Carpeta
             return campos;
         }
 
- 
+
 
         private void BT_Subir_Click(object sender, EventArgs e)
         {
@@ -86,7 +86,7 @@ namespace CalcIndep_Carpeta
         private void BT_Antihorario_Click(object sender, EventArgs e)
         {
             campos.ResetBindings();
-            campos = new BindingList<Beam>(camposList.OrderBy(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle)).ThenBy(b=>b.Id).ToList());
+            campos = new BindingList<Beam>(camposList.OrderBy(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle)).ThenBy(b => b.Id).ToList());
             LB_Campos.DataSource = campos;
         }
 
@@ -94,12 +94,37 @@ namespace CalcIndep_Carpeta
         {
             try
             {
-				string texto = "Se creó el archivo .PPF correctamente";
+                string texto = "Se creó el archivo .PPF correctamente";
                 crearPPF.escribirPPFcompleto(paciente, plan, extraerLista());
                 //if (plan.Beams.First().TreatmentUnit.Id== "6EX Viamonte" && Dcm.moverDCM(paciente,plan))
-                if ((plan.Beams.First().TreatmentUnit.Id == "2100CMLC" || plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX") && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCM(paciente, plan,esPlanSuma))
+                if ((plan.Beams.First().TreatmentUnit.Id == "2100CMLC" || plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX") && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCM(paciente, plan, esPlanSuma))
                 {
                     texto += " y se movió el archivo dcm";
+                }
+                else if ((plan.Beams.First().TreatmentUnit.Id == "D-2300CD" || plan.Beams.First().TreatmentUnit.Id == "Equipo1"))
+                {
+                    string equipoOrigen = "Equipo 1";
+                    if (plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
+                    {
+                        equipoOrigen = "Equipo 4";
+                    }
+                    if (Dcm.obtenerDCM(paciente,plan)!= "No se encontró coincidencia")
+                    {
+                        if ((plan.Beams.First().ControlPoints.Count() > 30 && plan.Beams.First().MLCPlanType == MLCPlanType.DoseDynamic) ||plan.Beams.First().MLCPlanType == MLCPlanType.VMAT)
+                        {
+
+                        }
+                        else
+                        {
+                            MoverAEquipo moverAEquipo = new MoverAEquipo(plan.Beams.Any(b => b.EnergyModeDisplayName == "10X"));
+                            moverAEquipo.ShowDialog();
+                            if (Dcm.moverDCM(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar))
+                            {
+                                texto += " y se movió el archivo dcm";
+                            }
+                        }
+                        
+                    }
                 }
                 MessageBox.Show(texto);
             }
@@ -127,7 +152,7 @@ namespace CalcIndep_Carpeta
             {
                 BT_Subir.Enabled = true;
             }
-            if (LB_Campos.SelectedIndex == LB_Campos.Items.Count -1)
+            if (LB_Campos.SelectedIndex == LB_Campos.Items.Count - 1)
             {
                 BT_Bajar.Enabled = false;
             }

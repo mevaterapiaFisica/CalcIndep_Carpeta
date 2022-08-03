@@ -67,7 +67,23 @@ namespace CalcIndep_Carpeta
             pdfRenderer.RenderDocument();
             pdfRenderer.PdfDocument.Save(path);
             MessageBox.Show("Se ha guaradado el reporte con el nombre: " + Path.GetFileName(path));
+            crearTxt(paciente, plan, camposCI);
 
+        }
+
+        public static void crearTxt(Patient paciente, PlanSetup plan, List<CampoCI> camposCI)
+        {
+            List<string> output = new List<string>();
+            foreach (CampoCI campoCI in camposCI)
+            {
+                output.Add(campoCI.ID + ";" + campoCI.sesgoRel + ";" + campoCI.sesgoAbs);
+            }
+            string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+
+
+            string path = pathDirectorio + @"\" + nombreMasID + "_CI.txt";
+            File.WriteAllLines(path, output);
         }
 
         public static void imprimir(Document report, Patient paciente, PlanSetup plan, string usuario, List<CampoCI> camposCI)

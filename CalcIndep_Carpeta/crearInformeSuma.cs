@@ -30,30 +30,29 @@ namespace CalcIndep_Carpeta
 
         public static void Informe(Patient paciente, PlanningItem plan, List<Structure> estructuras, bool _hayContext)
         {
-
-            if (_hayContext)
-            {
-                if (obtenerImagenes(paciente))
-                {
-                    exportarAPdf(paciente, plan, estructuras);
-                }
-                else if (Clipboard.ContainsImage())
-                {
-                    MessageBox.Show("No se encuentran las capturas.\nSe procederá con la impresión de pantalla");
-                    imagen = new Bitmap(Clipboard.GetImage());
-                    exportarAPdf(paciente, plan, imagen, estructuras);
-                }
-                else
-                {
-                    MessageBox.Show("No se encuentran las capturas ni la impresión de pantalla");
-                }
-            }
-            else
+            int imagenesPaciente = obtenerYContarImagenes(paciente);
+            if (imagenesPaciente == 3)
             {
                 exportarAPdf(paciente, plan, estructuras);
             }
-
-
+            else if (imagenesPaciente > 0)
+            {
+                MessageBox.Show("Se encontraron " + imagenesPaciente.ToString() + " imágenes del paciente (se esperaban 3).\nPor favor repetir el procedimiento desde el inicio");
+                foreach (string imagen in Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)))
+                {
+                    File.Delete(imagen);
+                }
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                MessageBox.Show("No se encuentran las capturas.\nSe procederá con la impresión de pantalla");
+                imagen = new Bitmap(Clipboard.GetImage());
+                exportarAPdf(paciente, plan, imagen, estructuras);
+            }
+            else
+            {
+                MessageBox.Show("No se encuentran las capturas ni la impresión de pantalla");
+            }
         }
 
         public static bool coloresIguales(System.Drawing.Color color1, System.Drawing.Color color2)
@@ -508,7 +507,7 @@ namespace CalcIndep_Carpeta
             }
         }
 
-        public static bool obtenerImagenes(Patient paciente)
+        public static int obtenerYContarImagenes(Patient paciente)
         {
             List<string> imagenes = Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)).ToList();
             if (imagenes.Count == 3)
@@ -516,12 +515,8 @@ namespace CalcIndep_Carpeta
                 File.Move(imagenes[0], Properties.Settings.Default.PathPrograma + @"\Imagenes\" + paciente.Id + "_axial.png");
                 File.Move(imagenes[1], Properties.Settings.Default.PathPrograma + @"\Imagenes\" + paciente.Id + "_sagital.png");
                 File.Move(imagenes[2], Properties.Settings.Default.PathPrograma + @"\Imagenes\" + paciente.Id + "_coronal.png");
-                return true;
             }
-            else
-            {
-                return false;
-            }
+            return imagenes.Count;
         }
 
         public static bool esCero(Tuple<int, int> par)

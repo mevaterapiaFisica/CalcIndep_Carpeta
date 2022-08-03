@@ -95,6 +95,13 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -175,6 +182,7 @@
       <DependentUpon>DatosPlanSuma.cs</DependentUpon>
     </Compile>
     <Compile Include="dcm.cs" />
+    <Compile Include="DRR.cs" />
     <Compile Include="Estilos.cs" />
     <Compile Include="EstructurasDVHInforme.cs">
       <SubType>Form</SubType>
@@ -196,6 +204,12 @@
     </Compile>
     <Compile Include="Graficar.cs" />
     <Compile Include="IO.cs" />
+    <Compile Include="MoverAEquipo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoverAEquipo.Designer.cs">
+      <DependentUpon>MoverAEquipo.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrdenCampos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +232,7 @@
     </Compile>
     <EmbeddedResource Include="ChequeoImagenes.resx">
       <DependentUpon>ChequeoImagenes.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuracion.resx">
       <DependentUpon>Configuracion.cs</DependentUpon>
@@ -233,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoverAEquipo.resx">
+      <DependentUpon>MoverAEquipo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrdenCampos.resx">
       <DependentUpon>OrdenCampos.cs</DependentUpon>

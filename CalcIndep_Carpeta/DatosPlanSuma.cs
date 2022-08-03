@@ -55,9 +55,13 @@ namespace CalcIndep_Carpeta
             {
                 tipoTratamiento = "de radiocirugía estereotáxica craneal (SRS)";
             }
-            else
+            else if (CB_TipoTratamiento.SelectedIndex == 4)
             {
                 tipoTratamiento = "de radioterapia estereotáxica extracreaneal (SBRT)";
+            }
+            else
+            {
+                tipoTratamiento = "guiado por imágenes (IGRT)";
             }
 
 

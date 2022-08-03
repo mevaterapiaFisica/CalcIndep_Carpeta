@@ -94,6 +94,24 @@ namespace CalcIndep_Carpeta
             }
             return pathDirectorio + @"\" + aux;
         }
+
+        public static string crearCarpetaPacienteImagenes(string pacienteLastName, string pacienteFirstName, string pacienteId, string cursoId, string planId, string Equipo)
+        {
+            string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
+            string pathDirectorio = Properties.Settings.Default.PathImagenesPacientes + @"\" + Equipo + @"\" + nombreMasID;
+            if (!Directory.Exists(pathDirectorio))
+            {
+                Directory.CreateDirectory(pathDirectorio);
+            }
+            string aux = planId.Replace(':', '_').Replace('\\', '_').Replace('/', '_') + " (" + cursoId + ")";
+            aux.Replace('\\', '-');
+            if (!Directory.Exists(pathDirectorio + @"\" + aux))
+            {
+                Directory.CreateDirectory(pathDirectorio + @"\" + aux);
+            }
+            return pathDirectorio + @"\" + aux;
+        }
+
         public static string GetUniqueFilename(string path, string baseName, string extention = "txt", int maxAttempts = 128)
         {
             if (!File.Exists(string.Format("{0}{1}.{2}", path, baseName, extention)))
