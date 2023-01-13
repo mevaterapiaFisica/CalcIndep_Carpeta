@@ -86,7 +86,7 @@ namespace CalcIndep_Carpeta
                 foreach (var beam in Beams)
                 {
                     campoDCM CampoDCM = new campoDCM();
-                    CampoDCM.ID = ((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C2").DData;
+                    CampoDCM.ID = (string)((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C2").DData;
                     foreach (var refBeam in RefBeams)
                     {
                         if (((EvilDICOM.Core.DICOMObject)refBeam).FindFirst("300C0006").DData == ((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C0").DData)

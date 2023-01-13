@@ -519,6 +519,11 @@ namespace CalcIndep_Carpeta
             return imagenes.Count;
         }
 
+        public static List<string> obtenerYListarImagenes(Patient paciente)
+        {
+            return Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)).ToList();
+        }
+
         public static bool esCero(Tuple<int, int> par)
         {
             if (par.Item1 != 0 || par.Item2 != 0)

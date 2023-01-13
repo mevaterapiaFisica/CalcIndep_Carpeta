@@ -88,6 +88,7 @@ namespace CalcIndep_Carpeta
 
         public static void imprimir(Document report, Patient paciente, PlanSetup plan, string usuario, List<CampoCI> camposCI)
         {
+            
             MigraDoc.Rendering.Printing.MigraDocPrintDocument pd = new MigraDoc.Rendering.Printing.MigraDocPrintDocument();
             var rendered = new DocumentRenderer(report);
             rendered.PrepareDocument();

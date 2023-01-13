@@ -9,13 +9,14 @@ using System.Text;
 using System.Windows.Forms;
 using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
+using EvilDICOM.Core.Modules;
 
 namespace CalcIndep_Carpeta
 {
     public partial class Form1 : Form
     {
         VMS.TPS.Common.Model.API.Application app;
-        Patient paciente;
+        VMS.TPS.Common.Model.API.Patient paciente;
         Course course;
         PlanningItem plan;
         int PlannedFractions;
@@ -30,7 +31,7 @@ namespace CalcIndep_Carpeta
         string texto = "";
 
 
-        public Form1(bool _hayContext = false, Patient _pacienteContext = null, PlanSetup _planContext = null, User _usuarioContext = null, IEnumerable<PlanSum> _planSumsContext = null)
+        public Form1(bool _hayContext = false, VMS.TPS.Common.Model.API.Patient _pacienteContext = null, PlanSetup _planContext = null, User _usuarioContext = null, IEnumerable<PlanSum> _planSumsContext = null)
         {
             InitializeComponent();
             usuarioContext = _usuarioContext;
@@ -128,7 +129,7 @@ namespace CalcIndep_Carpeta
         }
 
 
-        public Course abrirCurso(Patient paciente, string nombreCurso)
+        public Course abrirCurso(VMS.TPS.Common.Model.API.Patient paciente, string nombreCurso)
         {
             return paciente.Courses.Where(c => c.Id == nombreCurso).FirstOrDefault();
         }
@@ -167,7 +168,7 @@ namespace CalcIndep_Carpeta
          }*/
 
 
-        public List<Course> listaCursos(Patient paciente)
+        public List<Course> listaCursos(VMS.TPS.Common.Model.API.Patient paciente)
         {
             return paciente.Courses.ToList<Course>();
         }
@@ -404,6 +405,9 @@ namespace CalcIndep_Carpeta
                 {
                     string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
                     int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                    AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente),path);
+                    agregarImagenes.ShowDialog();
+                    numero += agregarImagenes.NumeroDeImagenes;
                     MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
                 }
             }
@@ -425,6 +429,9 @@ namespace CalcIndep_Carpeta
                     {
                         string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
                         int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                        AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente), path);
+                        agregarImagenes.ShowDialog();
+                        numero += agregarImagenes.NumeroDeImagenes;
                         MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
                     }
                 }
@@ -439,7 +446,7 @@ namespace CalcIndep_Carpeta
             }*/
         }
 
-        private List<string> ObtenerImagenesPaciente(Patient paciente)
+        private List<string> ObtenerImagenesPaciente(VMS.TPS.Common.Model.API.Patient paciente)
         {
             return Directory.GetFiles(Properties.Settings.Default.PathPrograma + @"\Imagenes").Where(f => f.Contains(paciente.Id)).ToList();
         }
