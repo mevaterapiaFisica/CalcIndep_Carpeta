@@ -33,6 +33,7 @@ namespace CalcIndep_Carpeta
 
         public Form1(bool _hayContext = false, VMS.TPS.Common.Model.API.Patient _pacienteContext = null, PlanSetup _planContext = null, User _usuarioContext = null, IEnumerable<PlanSum> _planSumsContext = null)
         {
+            CargaEnGoogleDrive.Cargar();
             InitializeComponent();
             usuarioContext = _usuarioContext;
             hayContext = _hayContext;

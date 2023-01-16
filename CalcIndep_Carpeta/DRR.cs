@@ -67,9 +67,9 @@ namespace CalcIndep_Carpeta
             List<Beam> camposOrdenados = plan.Beams.OrderBy(b => !b.IsSetupField).ToList();
             foreach (Beam campo in camposOrdenados)
             {
-                if (campo.IsSetupField || campo.ControlPoints.First().GantryAngle==campo.ControlPoints.Last().GantryAngle)
+                if (campo.IsSetupField || campo.ControlPoints.First().GantryAngle == campo.ControlPoints.Last().GantryAngle)
                 {
-                    if (campo.ReferenceImage!=null)
+                    if (campo.ReferenceImage != null)
                     {
                         Bitmap bitmap = dibujarCampoEnImagen(campo);
                         bitmap.Save(pathDestino + @"\" + (imagenes + 1).ToString() + "_" + campo.Id + ".png", System.Drawing.Imaging.ImageFormat.Png);
@@ -209,6 +209,26 @@ namespace CalcIndep_Carpeta
             }
             bitmap = rotar(bitmap, -anguloColimador);
         }
+
+        public static void marcarRef(Bitmap bitmap, int long1cm, double xRef, double yRef, double zRef, double AnguloGantry)
+        {
+            double desplazHorizcm = 0;
+            double desplazVertcm = zRef;
+            if (AnguloGantry==0)
+            {
+                desplazHorizcm = xRef;
+            }
+            else if (AnguloGantry==90)
+            {
+                desplazHorizcm = yRef;
+            }
+            else if (AnguloGantry==270)
+            {
+                desplazHorizcm = -yRef;
+            }
+
+        }
+
 
         public static void recortarImagen(Bitmap bitmap, double x1, double x2, double y1, double y2, int long1cm, bool esSetup, double anguloColimador)
         {
