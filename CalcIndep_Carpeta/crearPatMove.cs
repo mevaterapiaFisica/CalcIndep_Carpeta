@@ -98,7 +98,7 @@ namespace CalcIndep_Carpeta
                 generarArchivoTxt(paciente, iso, pathDirectorio + @"\" + nombreMasID + "_ISO" + (i + 1).ToString(), plan.TreatmentOrientation);
                 return false;
             }
-            List<object> textoAEnviar = new List<object> { paciente.Id, paciente.LastName.ToUpper() + ", " + paciente.FirstName, plan.Id, "Iso " + (i + 1).ToString(), desplazX.ToString(), sentidoX, desplazY.ToString(), sentidoY, desplazZ.ToString(), sentidoZ, DateTime.Today.ToShortDateString() };
+            List<object> textoAEnviar = new List<object> { paciente.Id, paciente.LastName.ToUpper() + ", " + paciente.FirstName + "_" + plan.Id, "Iso " + (i + 1).ToString(), desplazX.ToString(), sentidoX, desplazY.ToString(), sentidoY, desplazZ.ToString(), sentidoZ, DateTime.Today.ToShortDateString() };
             CargaEnGoogleDrive.Cargar(textoAEnviar,Equipo);
             return true;
         }

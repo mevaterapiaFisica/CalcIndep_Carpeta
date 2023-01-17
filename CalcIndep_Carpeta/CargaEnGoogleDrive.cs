@@ -49,7 +49,7 @@ namespace CalcIndep_Carpeta
 
             // Define request parameters.
             String spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
-            String range = "Pacientes " + Equipo + "!A2:K2";
+            String range = "Pacientes " + Equipo + "!A2:J2";
             //String range2 = "Hoja 1!F3:H3";
             var valueRange = new ValueRange();
             List<object> lista = new List<object> {"1-123-1","Ca, Jose","2","Right","3","In","4","Up",DateTime.Today.ToShortDateString()};
