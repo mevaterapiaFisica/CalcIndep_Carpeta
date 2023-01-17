@@ -69,7 +69,7 @@ namespace CalcIndep_Carpeta
             File.WriteAllLines(nombreArchivo, textoTXT(paciente, iso,patientOrientation));
         }
 
-        public static void enviarCorrimientos(Patient paciente, VVector iso, int i, PlanSetup plan)
+        public static bool enviarCorrimientos(Patient paciente, VVector iso, int i, PlanSetup plan)
         {
             double desplazX = Math.Round(iso.x / 10, 1);
             double desplazY = Math.Round(iso.y / 10, 1);
@@ -92,22 +92,27 @@ namespace CalcIndep_Carpeta
             }
             else
             {
-                MessageBox.Show("El equipo no cuenta con RefToIso");
-                return;
+                MessageBox.Show("El equipo no cuenta con RefToIso\nSe generara txt con corrimientos");
+                string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
+                string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+                generarArchivoTxt(paciente, iso, pathDirectorio + @"\" + nombreMasID + "_ISO" + (i + 1).ToString(), plan.TreatmentOrientation);
+                return false;
             }
             List<object> textoAEnviar = new List<object> { paciente.Id, paciente.LastName.ToUpper() + ", " + paciente.FirstName, plan.Id, "Iso " + (i + 1).ToString(), desplazX.ToString(), sentidoX, desplazY.ToString(), sentidoY, desplazZ.ToString(), sentidoZ, DateTime.Today.ToShortDateString() };
             CargaEnGoogleDrive.Cargar(textoAEnviar,Equipo);
+            return true;
         }
         public static void enviarTodosLosCorrimientos(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)
         {
             if (plan.Beams.First().TreatmentUnit.Id == "Equipo1" || plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
             {
-                MessageBox.Show("No hace falta PatMove para este equipo");
+                MessageBox.Show("No hace falta cargar corrimientos para este equipo");
             }
             else
             {
                 List<VVector> isos = crearPPF.listaIsos(plan);
                 int i = 0;
+                int j = 0;
                 foreach (VVector iso in isos)
                 {
                     if (chequearIsos && isosListos.Contains(iso))
@@ -118,18 +123,29 @@ namespace CalcIndep_Carpeta
                     {
                         if (Math.Abs(iso.x) < 0.01 && Math.Abs(iso.y) < 0.01 && Math.Abs(iso.z) < 0.01)
                         {
-                            MessageBox.Show("El iso número " + (i + 1).ToString() + " coincide con referencia,\nno es necesario un PatMove");
+                            MessageBox.Show("El iso número " + (i + 1).ToString() + " coincide con referencia,\nno es necesario cargar corrimientos");
                         }
                         else
                         {
-                            enviarCorrimientos(paciente, iso, i , plan);
-                            i++;
+                            if (enviarCorrimientos(paciente, iso, i , plan))
+                            {
+                                i++;
+                            }
+                            else
+                            {
+                                j++;
+                            }
+
                         }
                     }
                 }
                 if (i > 0)
                 {
-                    MessageBox.Show("Se cargaron " + i.ToString() + " corrimientos para el plan " + plan.Id);
+                    MessageBox.Show("Se cargaron " + i.ToString() + " corrimiento(s) para el plan " + plan.Id);
+                }
+                else if (j>0)
+                {
+                    MessageBox.Show("Se enviaron " + j.ToString() + " corrimiento(s) para el plan " + plan.Id);
                 }
                 else
                 {
