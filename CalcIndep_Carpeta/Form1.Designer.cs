@@ -98,7 +98,7 @@
             this.button_PatMove.Name = "button_PatMove";
             this.button_PatMove.Size = new System.Drawing.Size(141, 23);
             this.button_PatMove.TabIndex = 2;
-            this.button_PatMove.Text = "Generar PatMove";
+            this.button_PatMove.Text = "Cargar Corrimientos";
             this.button_PatMove.UseVisualStyleBackColor = true;
             this.button_PatMove.Click += new System.EventHandler(this.button_PatMove_Click);
             // 

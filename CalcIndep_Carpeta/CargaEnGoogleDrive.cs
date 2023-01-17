@@ -20,7 +20,7 @@ namespace CalcIndep_Carpeta
         static string ApplicationName = "UploadPatMove";
 
 
-        public static void Cargar()
+        public static void Cargar(List<object> textoAInsertar,string Equipo)
         {
             UserCredential credential;
             // Load client secrets.
@@ -49,11 +49,11 @@ namespace CalcIndep_Carpeta
 
             // Define request parameters.
             String spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
-            String range = "Pacientes!A2:I2";
+            String range = "Pacientes " + Equipo + "!A2:K2";
             //String range2 = "Hoja 1!F3:H3";
             var valueRange = new ValueRange();
             List<object> lista = new List<object> {"1-123-1","Ca, Jose","2","Right","3","In","4","Up",DateTime.Today.ToShortDateString()};
-            valueRange.Values = new List<IList<object>> { lista };
+            valueRange.Values = new List<IList<object>> { textoAInsertar };
 
             var appendRequest = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
             appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;

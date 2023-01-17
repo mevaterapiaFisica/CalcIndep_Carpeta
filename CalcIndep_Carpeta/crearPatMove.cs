@@ -68,6 +68,97 @@ namespace CalcIndep_Carpeta
             string nombreArchivo = nombre + ".txt";
             File.WriteAllLines(nombreArchivo, textoTXT(paciente, iso,patientOrientation));
         }
+
+        public static void enviarCorrimientos(Patient paciente, VVector iso, int i, PlanSetup plan)
+        {
+            double desplazX = Math.Round(iso.x / 10, 1);
+            double desplazY = Math.Round(iso.y / 10, 1);
+            double desplazZ = Math.Round(iso.z / 10, 1);
+            string sentidoX = iso.x >= 0 ? "Left" : "Right";
+            string sentidoY = iso.y >= 0 ? "Up" : "Down";
+            string sentidoZ = iso.z >= 0 ? "Out" : "In";
+            string Equipo = "";
+            if (plan.Beams.First().TreatmentUnit.Id=="2100CMLC")
+            {
+                Equipo = "Equipo 3";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX")
+            {
+                Equipo = "Equipo 2";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "CL21EX")
+            {
+                Equipo = "Medrano";
+            }
+            else
+            {
+                MessageBox.Show("El equipo no cuenta con RefToIso");
+                return;
+            }
+            List<object> textoAEnviar = new List<object> { paciente.Id, paciente.LastName.ToUpper() + ", " + paciente.FirstName, plan.Id, "Iso " + (i + 1).ToString(), desplazX.ToString(), sentidoX, desplazY.ToString(), sentidoY, desplazZ.ToString(), sentidoZ, DateTime.Today.ToShortDateString() };
+            CargaEnGoogleDrive.Cargar(textoAEnviar,Equipo);
+        }
+        public static void enviarTodosLosCorrimientos(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)
+        {
+            if (plan.Beams.First().TreatmentUnit.Id == "Equipo1" || plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
+            {
+                MessageBox.Show("No hace falta PatMove para este equipo");
+            }
+            else
+            {
+                List<VVector> isos = crearPPF.listaIsos(plan);
+                int i = 0;
+                foreach (VVector iso in isos)
+                {
+                    if (chequearIsos && isosListos.Contains(iso))
+                    {
+
+                    }
+                    else
+                    {
+                        if (Math.Abs(iso.x) < 0.01 && Math.Abs(iso.y) < 0.01 && Math.Abs(iso.z) < 0.01)
+                        {
+                            MessageBox.Show("El iso número " + (i + 1).ToString() + " coincide con referencia,\nno es necesario un PatMove");
+                        }
+                        else
+                        {
+                            enviarCorrimientos(paciente, iso, i , plan);
+                            i++;
+                        }
+                    }
+                }
+                if (i > 0)
+                {
+                    MessageBox.Show("Se cargaron " + i.ToString() + " corrimientos para el plan " + plan.Id);
+                }
+                else
+                {
+                    MessageBox.Show("El plan " + plan.Id + " no tiene corrimientos nuevos para cargar");
+                }
+
+            }
+        }
+
+        public static void enviarTodosLosCorrimientos(Patient paciente, PlanSum plan)
+        {
+            List<VVector> isos = new List<VVector>();
+            foreach (PlanSetup planSetup in plan.PlanSetups)
+            {
+                enviarTodosLosCorrimientos(paciente, planSetup);
+                //para todos los planes mando todos los isos aunque coincidan entre diferentes etapas
+                /*if (planSetup.Id == plan.PlanSetups.First().Id)
+                {
+                    enviarTodosLosCorrimientos(paciente, planSetup);
+                }
+
+                else
+                {
+                    enviarTodosLosCorrimientos(paciente, planSetup, isos, true);
+                }*/
+            }
+
+        }
+
         public static void generarTodosLosPatMove(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)
         {
             List<string> listaTxtsPaths = new List<string>();

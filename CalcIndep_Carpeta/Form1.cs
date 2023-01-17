@@ -33,7 +33,6 @@ namespace CalcIndep_Carpeta
 
         public Form1(bool _hayContext = false, VMS.TPS.Common.Model.API.Patient _pacienteContext = null, PlanSetup _planContext = null, User _usuarioContext = null, IEnumerable<PlanSum> _planSumsContext = null)
         {
-            CargaEnGoogleDrive.Cargar();
             InitializeComponent();
             usuarioContext = _usuarioContext;
             hayContext = _hayContext;
@@ -289,7 +288,8 @@ namespace CalcIndep_Carpeta
             {
                 try
                 {
-                    crearPatMove.generarTodosLosPatMove(paciente, (PlanSetup)plan);
+                    //crearPatMove.generarTodosLosPatMove(paciente, (PlanSetup)plan);
+                    crearPatMove.enviarTodosLosCorrimientos(paciente, (PlanSetup)plan);
                 }
                 catch (Exception)
                 {
@@ -301,7 +301,7 @@ namespace CalcIndep_Carpeta
             {
                 try
                 {
-                    crearPatMove.generarTodosLosPatMove(paciente, (PlanSum)plan);
+                    crearPatMove.enviarTodosLosCorrimientos(paciente, (PlanSum)plan);
                 }
                 catch (Exception)
                 {
