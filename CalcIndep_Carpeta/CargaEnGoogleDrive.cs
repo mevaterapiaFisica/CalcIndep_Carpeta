@@ -52,7 +52,7 @@ namespace CalcIndep_Carpeta
             String range = "Pacientes " + Equipo + "!A2:J2";
             //String range2 = "Hoja 1!F3:H3";
             var valueRange = new ValueRange();
-            List<object> lista = new List<object> {"1-123-1","Ca, Jose","2","Right","3","In","4","Up",DateTime.Today.ToShortDateString()};
+            //List<object> lista = new List<object> {"1-123-1","Ca, Jose","2","Right","3","In","4","Up",DateTime.Today.ToShortDateString()};
             valueRange.Values = new List<IList<object>> { textoAInsertar };
 
             var appendRequest = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
