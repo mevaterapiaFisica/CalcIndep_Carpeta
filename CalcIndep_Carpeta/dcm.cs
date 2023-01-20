@@ -89,7 +89,9 @@ namespace CalcIndep_Carpeta
                     CampoDCM.ID = (string)((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C2").DData;
                     foreach (var refBeam in RefBeams)
                     {
-                        if (((EvilDICOM.Core.DICOMObject)refBeam).FindFirst("300C0006").DData == ((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C0").DData)
+                        int refBeamInt = (int)((EvilDICOM.Core.DICOMObject)refBeam).FindFirst("300C0006").DData;
+                        int beamInt = (int)((EvilDICOM.Core.DICOMObject)beam).FindFirst("300A00C0").DData;
+                        if (refBeamInt==beamInt)
                         {
                             CampoDCM.UM = Convert.ToInt32(Math.Round((double)((EvilDICOM.Core.DICOMObject)refBeam).FindFirst("300A0086").DData));
                             break;

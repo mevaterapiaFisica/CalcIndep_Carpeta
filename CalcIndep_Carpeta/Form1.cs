@@ -119,9 +119,12 @@ namespace CalcIndep_Carpeta
         private void bton_Open_Click(object sender, EventArgs e)
         {
             abrirPaciente(textBox_HC.Text);
-            label_Paciente.Text = (paciente.LastName + ", " + paciente.FirstName);
-            Cursos = listaCursos(paciente);
-            listBox_Course.DataSource = Cursos;
+            if (paciente != null)
+            {
+                label_Paciente.Text = (paciente.LastName + ", " + paciente.FirstName);
+                Cursos = listaCursos(paciente);
+                listBox_Course.DataSource = Cursos;
+            }
             //listBox_Course.Items = Cursos;
             //plan = paciente.Courses.First().PlanSetups.First();
             //MessageBox.Show(texto);
@@ -406,9 +409,13 @@ namespace CalcIndep_Carpeta
                 {
                     string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
                     int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
-                    AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente),path);
-                    agregarImagenes.ShowDialog();
-                    numero += agregarImagenes.NumeroDeImagenes;
+                    List<string> imagenesExtra = ObtenerImagenesPaciente(paciente);
+                    if (imagenesExtra.Count>0)
+                    {
+                        AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente), path);
+                        agregarImagenes.ShowDialog();
+                        numero += agregarImagenes.NumeroDeImagenes;
+                    }
                     MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
                 }
             }

@@ -37,7 +37,7 @@ namespace CalcIndep_Carpeta.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\isos")]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\isos ")]
         public string PathIsos {
             get {
                 return ((string)(this["PathIsos"]));

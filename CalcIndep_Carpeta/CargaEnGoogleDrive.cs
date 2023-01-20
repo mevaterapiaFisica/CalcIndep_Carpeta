@@ -11,6 +11,8 @@ using Google.Apis.Services;
 using System.Threading;
 using System.IO;
 using System.Net;
+using System.Net.NetworkInformation;
+using System.Windows.Forms;
 
 namespace CalcIndep_Carpeta
 {
@@ -22,14 +24,22 @@ namespace CalcIndep_Carpeta
 
         public static void Cargar(List<object> textoAInsertar,string Equipo)
         {
-            UserCredential credential;
+            Ping p1 = new Ping();
+            PingReply PR = p1.Send("drive.google.com");
+            // check when the ping is not success
+            if (!PR.Status.ToString().Equals("Success"))
+            {
+                MessageBox.Show("No se puede conectar con google drive\nReintentar en un rato");
+                return;
+            }
+                UserCredential credential;
             // Load client secrets.
             using (var stream =
-                   new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                   new FileStream(@"\\ariamevadb-svr\va_data$\Calculo Independiente\credentials.json", FileMode.Open, FileAccess.Read))
             {
                 /* The file token.json stores the user's access and refresh tokens, and is created
                  automatically when the authorization flow completes for the first time. */
-                string credPath = "token.json";
+                string credPath = @"\\ariamevadb-svr\va_data$\Calculo Independiente\token.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.FromStream(stream).Secrets,
                                     Scopes,

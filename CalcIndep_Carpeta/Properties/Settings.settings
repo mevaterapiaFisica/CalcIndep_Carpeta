@@ -6,7 +6,7 @@
       <Value Profile="(Default)">\\Ariamevadb-svr\va_data$\Pacientes</Value>
     </Setting>
     <Setting Name="PathIsos" Type="System.String" Scope="User">
-      <Value Profile="(Default)">\\FISICA0\isos</Value>
+      <Value Profile="(Default)">\\FISICA0\isos </Value>
     </Setting>
     <Setting Name="PathCopiaIsos" Type="System.String" Scope="User">
       <Value Profile="(Default)">\\FISICA0\isos\Copias de patmove</Value>

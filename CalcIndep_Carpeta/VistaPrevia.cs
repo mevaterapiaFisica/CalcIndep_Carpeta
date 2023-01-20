@@ -74,6 +74,12 @@ namespace CalcIndep_Carpeta
             llenarDGV(camposCI);
             colorCelda(DGV_Resultado);
         }
+
+        private void BT_GuardarPDF_Click(object sender, EventArgs e)
+        {
+            ReporteCI.exportarAPdf(report, paciente, plan, usuario, camposCI);
+            Close();
+        }
     }
 }
 
