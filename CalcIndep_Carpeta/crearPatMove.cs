@@ -71,9 +71,9 @@ namespace CalcIndep_Carpeta
 
         public static bool enviarCorrimientos(Patient paciente, VVector iso, int i, PlanSetup plan)
         {
-            double desplazX = Math.Round(iso.x / 10, 1);
-            double desplazY = Math.Round(iso.y / 10, 1);
-            double desplazZ = Math.Round(iso.z / 10, 1);
+            double desplazX = Math.Abs(Math.Round(iso.x / 10, 1));
+            double desplazY = Math.Abs(Math.Round(iso.y / 10, 1));
+            double desplazZ = Math.Abs(Math.Round(iso.z / 10, 1));
             string sentidoX = iso.x >= 0 ? "Left" : "Right";
             string sentidoY = iso.y >= 0 ? "Up" : "Down";
             string sentidoZ = iso.z >= 0 ? "Out" : "In";

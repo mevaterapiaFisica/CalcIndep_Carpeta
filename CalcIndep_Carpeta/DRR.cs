@@ -12,12 +12,12 @@ namespace CalcIndep_Carpeta
 {
     public class DRR
     {
-        public static Bitmap dibujarCampoEnImagen(Beam campo)
+        public static Bitmap dibujarCampoEnImagen(Beam campo, PlanSetup plan, Course curso, Patient paciente)
         {
             Bitmap bitmap = bitmapDeImagenDeReferencia(campo);
-            int long1cm = Convert.ToInt32(10 / campo.ReferenceImage.XRes);
+            int long1cm = Convert.ToInt32(10.0 / campo.ReferenceImage.XRes);
             dibujarCampo(bitmap, campo.ControlPoints[0].JawPositions.X1, campo.ControlPoints[0].JawPositions.X2, campo.ControlPoints[0].JawPositions.Y1, campo.ControlPoints[0].JawPositions.Y2, long1cm, campo.IsSetupField, campo.ControlPoints[0].CollimatorAngle, campo.ControlPoints[0].LeafPositions);
-            AgregarTexto(bitmap, crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle).ToString(), campo.Id, Math.Round((campo.SSD / 10), 1).ToString());
+            AgregarTexto(bitmap, paciente.Name, plan.Id, curso.Id, crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle).ToString(), crearPPF.IECaVarian(campo.ControlPoints.First().CollimatorAngle).ToString(), campo.Id, Math.Round(campo.SSD / 10.0, 1).ToString());
             return bitmap;
         }
 
@@ -44,24 +44,22 @@ namespace CalcIndep_Carpeta
         }
 
 
-        public static void AgregarTexto(Bitmap bitmap, string gantry, string nombreCampo, string DFP)
-        {
-            string texto = nombreCampo + "\nGantry: " + gantry + "º\nDFP: " + DFP + "cm";
-
-
-            using (var g = Graphics.FromImage(bitmap))
+        public static void AgregarTexto(Bitmap bitmap, string paciente, string plan, string curso, string gantry, string colimador, string nombreCampo, string DFP)
+	{
+		string texto = paciente + "\n" + plan + " - " + curso + "\n" + nombreCampo + "\nGantry: " + gantry + " - Col: " + colimador + "º\nDFP: " + DFP + "cm";
+	        using (var g = Graphics.FromImage(bitmap))
             {
-                RectangleF rectf = new RectangleF(30, 30, 400, 150);
+                RectangleF rectf = new RectangleF(30, 30, 450, 150);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.DrawString(texto, new System.Drawing.Font("Arial", 15), Brushes.Yellow, rectf);
+                g.DrawString(texto, new System.Drawing.Font("Arial", 14), Brushes.Yellow, rectf);
 
                 g.Flush();
             }
         }
 
-        public static int GenerarImagenes(PlanSetup plan, string pathDestino)
+        public static int GenerarImagenes(PlanSetup plan, string pathDestino, Course curso, Patient paciente)
         {
             int imagenes = 0;
             List<Beam> camposOrdenados = plan.Beams.OrderBy(b => !b.IsSetupField).ToList();
@@ -71,7 +69,7 @@ namespace CalcIndep_Carpeta
                 {
                     if (campo.ReferenceImage != null)
                     {
-                        Bitmap bitmap = dibujarCampoEnImagen(campo);
+                        Bitmap bitmap = dibujarCampoEnImagen(campo,plan,curso,paciente);
                         bitmap.Save(pathDestino + @"\" + (imagenes + 1).ToString() + "_" + campo.Id + ".png", System.Drawing.Imaging.ImageFormat.Png);
                         imagenes++;
                     }

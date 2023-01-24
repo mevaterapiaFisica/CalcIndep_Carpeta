@@ -278,6 +278,10 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "CETRO_Fotones_06MV";
             }
+            else if (campo.TreatmentUnit.Id == "CL21EX")
+            {
+                equipoString += "MEDRANO_Fotones_06MV";
+            }
             return equipoString;
         }
 

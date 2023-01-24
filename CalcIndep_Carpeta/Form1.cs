@@ -408,7 +408,7 @@ namespace CalcIndep_Carpeta
                 else
                 {
                     string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
-                    int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                    int numero = DRR.GenerarImagenes((PlanSetup)plan, path, crearInforme.Curso(paciente, plan), paciente);
                     List<string> imagenesExtra = ObtenerImagenesPaciente(paciente);
                     if (imagenesExtra.Count>0)
                     {
@@ -436,7 +436,7 @@ namespace CalcIndep_Carpeta
                     else
                     {
                         string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
-                        int numero = DRR.GenerarImagenes((PlanSetup)plan, path);
+                        int numero = DRR.GenerarImagenes(planSetup, path, crearInforme.Curso(paciente, planSetup), paciente);
                         AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente), path);
                         agregarImagenes.ShowDialog();
                         numero += agregarImagenes.NumeroDeImagenes;
@@ -475,6 +475,14 @@ namespace CalcIndep_Carpeta
             else if (plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
             {
                 return "Equipo4";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "CL21EX")
+            {
+                return "EquipoMedrano";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "PBA_6EX_730")
+            {
+                return "EquipoCetro";
             }
             else
             {
