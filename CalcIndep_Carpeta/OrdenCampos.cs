@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
+using static CalcIndep_Carpeta.ReporteCI;
 
 
 namespace CalcIndep_Carpeta
@@ -78,7 +79,7 @@ namespace CalcIndep_Carpeta
         {
             //camposList.Sort((x, y) => x.ControlPoints.First().GantryAngle.CompareTo(y.ControlPoints.First().GantryAngle));
             campos.ResetBindings();
-            campos = new BindingList<Beam>(camposList.OrderByDescending(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle)).ThenBy(b => b.Id).ToList());
+            campos = new BindingList<Beam>(camposList.OrderByDescending(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle, crearPPF.EquipoEsIEC(b))).ThenBy(b => b.Id).ToList());
             LB_Campos.DataSource = campos;
             //LB_Campos.DataSource = LB_Campos.Items.Cast<Beam>().OrderBy(b => b.ControlPoints.First().GantryAngle).ToList();
         }
@@ -86,7 +87,7 @@ namespace CalcIndep_Carpeta
         private void BT_Antihorario_Click(object sender, EventArgs e)
         {
             campos.ResetBindings();
-            campos = new BindingList<Beam>(camposList.OrderBy(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle)).ThenBy(b => b.Id).ToList());
+            campos = new BindingList<Beam>(camposList.OrderBy(b => crearPPF.IECaVarian(b.ControlPoints.First().GantryAngle, crearPPF.EquipoEsIEC(b))).ThenBy(b => b.Id).ToList());
             LB_Campos.DataSource = campos;
         }
 

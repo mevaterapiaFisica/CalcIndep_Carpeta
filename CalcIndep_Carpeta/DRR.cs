@@ -14,10 +14,11 @@ namespace CalcIndep_Carpeta
     {
         public static Bitmap dibujarCampoEnImagen(Beam campo, PlanSetup plan, Course curso, Patient paciente)
         {
+            
             Bitmap bitmap = bitmapDeImagenDeReferencia(campo);
             int long1cm = Convert.ToInt32(10.0 / campo.ReferenceImage.XRes);
             dibujarCampo(bitmap, campo.ControlPoints[0].JawPositions.X1, campo.ControlPoints[0].JawPositions.X2, campo.ControlPoints[0].JawPositions.Y1, campo.ControlPoints[0].JawPositions.Y2, long1cm, campo.IsSetupField, campo.ControlPoints[0].CollimatorAngle, campo.ControlPoints[0].LeafPositions);
-            AgregarTexto(bitmap, paciente.Name, plan.Id, curso.Id, crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle).ToString(), crearPPF.IECaVarian(campo.ControlPoints.First().CollimatorAngle).ToString(), campo.Id, Math.Round(campo.SSD / 10.0, 1).ToString());
+            AgregarTexto(bitmap, paciente.Name, plan.Id, curso.Id, crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle,crearPPF.EquipoEsIEC(campo)).ToString(), crearPPF.IECaVarian(campo.ControlPoints.First().CollimatorAngle,crearPPF.EquipoEsIEC(campo)).ToString(), campo.Id, Math.Round(campo.SSD / 10.0, 1).ToString());
             return bitmap;
         }
 

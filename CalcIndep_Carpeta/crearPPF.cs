@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
+using VMS.TPS.Common.Model;
 
 namespace CalcIndep_Carpeta
 {
@@ -78,10 +79,10 @@ namespace CalcIndep_Carpeta
                 x2 = 0;
             }
             //campo.
-            string gantry = IECaVarian(campo.ControlPoints[0].GantryAngle).ToString();
+            string gantry = IECaVarian(campo.ControlPoints[0].GantryAngle,EquipoEsIEC(campo)).ToString();
             if (campo.ControlPoints.Last().GantryAngle != campo.ControlPoints.First().GantryAngle)
             {
-                gantry += "->" + IECaVarian(campo.ControlPoints.Last().GantryAngle).ToString();
+                gantry += "->" + IECaVarian(campo.ControlPoints.Last().GantryAngle, EquipoEsIEC(campo)).ToString();
             }
             string cuna = "NONE";
             string orientacionCuna = "----";
@@ -95,10 +96,10 @@ namespace CalcIndep_Carpeta
             campoPPF.Add("ISO" + (posicionIsoEnLista(campo.IsocenterPosition, plan) + 1).ToString());
             campoPPF.Add(tamY.ToString());
             campoPPF.Add(tamX.ToString());
-            campoPPF.Add(IECaVarian(campo.ControlPoints[0].PatientSupportAngle).ToString());
+            campoPPF.Add(IECaVarian(campo.ControlPoints[0].PatientSupportAngle, EquipoEsIEC(campo)).ToString());
             campoPPF.Add(gantry);
             campoPPF.Add("0");
-            campoPPF.Add(IECaVarian(campo.ControlPoints[0].CollimatorAngle).ToString());
+            campoPPF.Add(IECaVarian(campo.ControlPoints[0].CollimatorAngle, EquipoEsIEC(campo)).ToString());
             //campoPPF.Add()
             campoPPF.Add(Math.Round((campo.WeightFactor * factorPesos), 5).ToString());
             campoPPF.Add(cuna);
@@ -180,8 +181,12 @@ namespace CalcIndep_Carpeta
             return -1;
         }
 
-        public static double IECaVarian(double valorIEC)
+        public static double IECaVarian(double valorIEC, bool esIEC)
         {
+            if (esIEC)
+            {
+                return valorIEC;
+            }
             if (valorIEC <= 180)
             {
                 return 180 - valorIEC;
@@ -283,6 +288,10 @@ namespace CalcIndep_Carpeta
                 equipoString += "MEDRANO_Fotones_06MV";
             }
             return equipoString;
+        }
+        public static bool EquipoEsIEC(Beam campo)
+        {
+            return equipo(campo).Contains("MEDRANO");
         }
 
         public static VVector restaVectores(VVector v1, VVector v2)

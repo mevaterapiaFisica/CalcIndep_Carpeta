@@ -714,11 +714,11 @@ namespace CalcIndep_Carpeta
                 string gantry = "";
                 if (campo.ControlPoints.First().GantryAngle == campo.ControlPoints.Last().GantryAngle)
                 {
-                    gantry = crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle).ToString();
+                    gantry = crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle, crearPPF.EquipoEsIEC(campo)).ToString();
                 }
                 else
                 {
-                    gantry = crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle).ToString() + "->" + crearPPF.IECaVarian(campo.ControlPoints.Last().GantryAngle).ToString();
+                    gantry = crearPPF.IECaVarian(campo.ControlPoints.First().GantryAngle, crearPPF.EquipoEsIEC(campo)).ToString() + "->" + crearPPF.IECaVarian(campo.ControlPoints.Last().GantryAngle, crearPPF.EquipoEsIEC(campo)).ToString();
                 }
 
                 double y2 = Math.Round((campo.ControlPoints.First().JawPositions.Y2 / 10), 1);
@@ -738,8 +738,8 @@ namespace CalcIndep_Carpeta
                 fila.Cells[0].AddParagraph(campo.Id);
                 fila.Cells[1].AddParagraph(tecnica);
                 fila.Cells[2].AddParagraph(gantry);
-                fila.Cells[3].AddParagraph(crearPPF.IECaVarian(campo.ControlPoints.First().CollimatorAngle).ToString());
-                fila.Cells[4].AddParagraph(crearPPF.IECaVarian(campo.ControlPoints.First().PatientSupportAngle).ToString());
+                fila.Cells[3].AddParagraph(crearPPF.IECaVarian(campo.ControlPoints.First().CollimatorAngle, crearPPF.EquipoEsIEC(campo)).ToString());
+                fila.Cells[4].AddParagraph(crearPPF.IECaVarian(campo.ControlPoints.First().PatientSupportAngle, crearPPF.EquipoEsIEC(campo)).ToString());
                 fila.Cells[5].AddParagraph(textoX);
                 fila.Cells[6].AddParagraph(textoY);
                 fila.Cells[7].AddParagraph((Math.Round(campo.SSD, 0) / 10).ToString());

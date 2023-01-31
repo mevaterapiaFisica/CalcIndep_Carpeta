@@ -200,7 +200,7 @@ namespace CalcIndep_Carpeta
             List<double> longitudes = new List<double>();
             if (planSetup.Beams.Any(c=>c.Technique.Id=="ARC"))
             {
-                longitudes = planSetup.Beams.Where(c => c.Technique.Id == "ARC").Select(c => crearPPF.IECaVarian(c.ControlPoints.Last().GantryAngle) - crearPPF.IECaVarian(c.ControlPoints.First().GantryAngle)).ToList();
+                longitudes = planSetup.Beams.Where(c => c.Technique.Id == "ARC").Select(c => crearPPF.IECaVarian(c.ControlPoints.Last().GantryAngle, crearPPF.EquipoEsIEC(c)) - crearPPF.IECaVarian(c.ControlPoints.First().GantryAngle,crearPPF.EquipoEsIEC(c))).ToList();
                 if (Math.Abs(longitudes.Sum()) > longitudes.Select(l => Math.Abs(l)).Max())
                 {
                     texto += "\nRevisar la orientación de los arcos. Es posible que no sea la ópitma";
