@@ -127,7 +127,8 @@ namespace CalcIndep_Carpeta
                         }
                         else
                         {
-                            if (enviarCorrimientos(paciente, iso, i , plan))
+                            if (enviarCorrimientos(paciente, corregirPorPatientOrientation(iso,plan.TreatmentOrientation), i , plan))
+                            //if (enviarCorrimientos(paciente, iso, i, plan))
                             {
                                 i++;
                             }

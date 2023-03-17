@@ -229,19 +229,8 @@ namespace CalcIndep_Carpeta
         public static string doseRate(Beam campo)
         {
             string texto = "";
-            if (campo.TreatmentUnit.Id == "2100CMLC")
-            {
-
-                if (campo.DoseRate != 240)
-                {
-
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-            }
-
-            else if (campo.EnergyModeDisplayName == "6X-SRS")
+            
+            if (campo.EnergyModeDisplayName == "6X-SRS")
             {
                 if (campo.DoseRate != 1000)
                 {

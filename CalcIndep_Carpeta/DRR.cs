@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
-
+using System.Windows.Forms;
 
 namespace CalcIndep_Carpeta
 {
@@ -68,7 +68,12 @@ namespace CalcIndep_Carpeta
             {
                 if (campo.IsSetupField || campo.ControlPoints.First().GantryAngle == campo.ControlPoints.Last().GantryAngle)
                 {
-                    if (campo.ReferenceImage != null)
+                    if (campo.EnergyModeDisplayName.Contains("E"))
+                    {
+                        MessageBox.Show("El campo" + campo.Id + " es de electrones, no se puede extraer la imagen\nSe continuará con los siguientes");
+                        break;
+                    }
+                    else if (campo.ReferenceImage != null)
                     {
                         Bitmap bitmap = dibujarCampoEnImagen(campo,plan,curso,paciente);
                         bitmap.Save(pathDestino + @"\" + (imagenes + 1).ToString() + "_" + campo.Id + ".png", System.Drawing.Imaging.ImageFormat.Png);
