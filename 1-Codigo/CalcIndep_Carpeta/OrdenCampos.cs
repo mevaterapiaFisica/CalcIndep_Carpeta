@@ -98,9 +98,13 @@ namespace CalcIndep_Carpeta
                 string texto = "Se creó el archivo .PPF correctamente";
                 crearPPF.escribirPPFcompleto(paciente, plan, extraerLista());
                 //if (plan.Beams.First().TreatmentUnit.Id== "6EX Viamonte" && Dcm.moverDCM(paciente,plan))
-                if ((plan.Beams.First().TreatmentUnit.Id == "2100CMLC" || plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX") && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCM(paciente, plan, esPlanSuma))
+                if (plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCM(paciente, plan, esPlanSuma))
                 {
                     texto += " y se movió el archivo dcm";
+                }
+                else if (plan.Beams.First().TreatmentUnit.Id == "Equipo3" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCMEq3(paciente, plan, esPlanSuma))
+                {
+                    texto += " y se movieron los archivo dcm";
                 }
                 else if ((plan.Beams.First().TreatmentUnit.Id == "D-2300CD" || plan.Beams.First().TreatmentUnit.Id == "Equipo1"))
                 {
@@ -119,9 +123,19 @@ namespace CalcIndep_Carpeta
                         {
                             MoverAEquipo moverAEquipo = new MoverAEquipo(plan.Beams.Any(b => b.EnergyModeDisplayName == "10X"));
                             moverAEquipo.ShowDialog();
-                            if (Dcm.moverDCM(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar))
+                            if (moverAEquipo.equipoAEnviar=="Equipo3")
                             {
-                                texto += " y se movió el archivo dcm";
+                                if (Dcm.moverDCMEq3(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar))
+                                {
+                                    texto += " y se movieron los archivos dcm";
+                                }
+                            }
+                            else
+                            {
+                                if (Dcm.moverDCM(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar))
+                                {
+                                    texto += " y se movió el archivo dcm";
+                                }
                             }
                         }
                         

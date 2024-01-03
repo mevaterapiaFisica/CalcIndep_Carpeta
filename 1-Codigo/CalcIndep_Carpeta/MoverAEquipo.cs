@@ -29,7 +29,7 @@ namespace CalcIndep_Carpeta
 
         private void BT_EnviarAEq3_Click(object sender, EventArgs e)
         {
-            equipoAEnviar = "2100CMLC";
+            equipoAEnviar = "Equipo3";
             this.Close();
         }
 
