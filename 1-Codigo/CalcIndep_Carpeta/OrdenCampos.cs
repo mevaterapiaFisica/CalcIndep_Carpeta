@@ -102,9 +102,14 @@ namespace CalcIndep_Carpeta
                 {
                     texto += " y se movió el archivo dcm";
                 }
-                else if (plan.Beams.First().TreatmentUnit.Id == "Equipo3" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved && Dcm.moverDCMEq3(paciente, plan, esPlanSuma))
+                else if (plan.Beams.First().TreatmentUnit.Id == "Equipo3" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved)
                 {
-                    texto += " y se movieron los archivo dcm";
+                    string aux = Dcm.moverDCMEq3(paciente, plan, esPlanSuma);
+                    if (aux!="")
+                    {
+                        texto += aux;
+                    }
+                    
                 }
                 else if ((plan.Beams.First().TreatmentUnit.Id == "D-2300CD" || plan.Beams.First().TreatmentUnit.Id == "Equipo1"))
                 {
@@ -125,9 +130,10 @@ namespace CalcIndep_Carpeta
                             moverAEquipo.ShowDialog();
                             if (moverAEquipo.equipoAEnviar=="Equipo3")
                             {
-                                if (Dcm.moverDCMEq3(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar))
+                                string aux = Dcm.moverDCMEq3(paciente, plan, esPlanSuma, true, equipoOrigen, moverAEquipo.equipoAEnviar);
+                                if (aux != "")
                                 {
-                                    texto += " y se movieron los archivos dcm";
+                                    texto += aux;
                                 }
                             }
                             else

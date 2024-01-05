@@ -12,7 +12,7 @@ namespace CalcIndep_Carpeta.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -73,25 +73,25 @@ namespace CalcIndep_Carpeta.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\\\ARIAMEVADB-SVR\\va_data$\\Export")]
-        public string PathDCMRP {
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\fisica0\\equipo2\\DICOM RT\\5 - Para Asignar")]
+        public string PathDCMAsignarEq2 {
             get {
-                return ((string)(this["PathDCMRP"]));
+                return ((string)(this["PathDCMAsignarEq2"]));
             }
             set {
-                this["PathDCMRP"] = value;
+                this["PathDCMAsignarEq2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("\\\\FISICA0\\equipo3\\DICOM RT\\1 - Inicios")]
-        public string PathDCMEquipo {
+        public string PathDCMEquipo3 {
             get {
-                return ((string)(this["PathDCMEquipo"]));
+                return ((string)(this["PathDCMEquipo3"]));
             }
             set {
-                this["PathDCMEquipo"] = value;
+                this["PathDCMEquipo3"] = value;
             }
         }
         
@@ -116,6 +116,18 @@ namespace CalcIndep_Carpeta.Properties {
             }
             set {
                 this["PathImagenesPacientes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\fisica0\\equipo3\\DICOM RT\\5 - Para Asignar")]
+        public string PathDCMAsignarEq3 {
+            get {
+                return ((string)(this["PathDCMAsignarEq3"]));
+            }
+            set {
+                this["PathDCMAsignarEq3"] = value;
             }
         }
     }

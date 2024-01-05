@@ -534,11 +534,15 @@ namespace CalcIndep_Carpeta
             {
                 return true;
             }
+            else if (camilla.Contains("Unipanel") && equipo == "CL21EX")
+            {
+                return true;
+            }
             else if (camilla.Contains("IGRT") && equipo == "Equipo1")
             {
                 return true;
             }
-            else if (camilla.Contains("IGRT") && equipo == "2100CMLC")
+            else if (camilla.Contains("IGRT") && equipo == "Equipo3")
             {
                 return true;
             }

@@ -78,11 +78,11 @@ namespace CalcIndep_Carpeta
             string sentidoY = iso.y >= 0 ? "Up" : "Down";
             string sentidoZ = iso.z >= 0 ? "Out" : "In";
             string Equipo = "";
-            if (plan.Beams.First().TreatmentUnit.Id=="2100CMLC")
+            /*if (plan.Beams.First().TreatmentUnit.Id=="Equipo3")
             {
                 Equipo = "Equipo 3";
-            }
-            else if (plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX")
+            }*/
+            if (plan.Beams.First().TreatmentUnit.Id == "Equipo 2 6EX")
             {
                 Equipo = "Equipo 2";
             }
@@ -104,7 +104,7 @@ namespace CalcIndep_Carpeta
         }
         public static void enviarTodosLosCorrimientos(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)
         {
-            if (plan.Beams.First().TreatmentUnit.Id == "Equipo1" || plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
+            if (plan.Beams.First().TreatmentUnit.Id == "Equipo1" || plan.Beams.First().TreatmentUnit.Id == "D-2300CD" || plan.Beams.First().TreatmentUnit.Id == "Equipo3")
             {
                 MessageBox.Show("No hace falta cargar corrimientos para este equipo");
             }

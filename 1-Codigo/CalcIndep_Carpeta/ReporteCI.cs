@@ -199,7 +199,7 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "Equipo 1";
             }
-            else if (campo.TreatmentUnit.Id == "2100CMLC")
+            else if (campo.TreatmentUnit.Id == "Equipo3")
             {
                 equipoString = "Equipo 3";
             }

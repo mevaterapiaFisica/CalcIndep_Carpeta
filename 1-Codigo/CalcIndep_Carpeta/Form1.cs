@@ -468,7 +468,7 @@ namespace CalcIndep_Carpeta
             {
                 return "Equipo2";
             }
-            else if (plan.Beams.First().TreatmentUnit.Id == "2100CMLC")
+            else if (plan.Beams.First().TreatmentUnit.Id == "Equipo3")
             {
                 return "Equipo3";
             }

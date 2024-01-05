@@ -208,7 +208,7 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "MEVA_EQ2_Fotones_06MV";
             }
-            else if (campo.TreatmentUnit.Id == "2100CMLC")
+            else if (campo.TreatmentUnit.Id == "Equipo3")
             {
                 equipoString += "MEVA_EQ3_";
                 if (campo.EnergyModeDisplayName == "6X")
@@ -231,14 +231,14 @@ namespace CalcIndep_Carpeta
                 {
                     equipoString += "Electrones_12MeV";
                 }
-                else if (campo.EnergyModeDisplayName == "16E")
+                /*else if (campo.EnergyModeDisplayName == "16E")
                 {
                     equipoString += "Electrones_16MeV";
                 }
                 else if (campo.EnergyModeDisplayName == "20E")
                 {
                     equipoString += "Electrones_20MeV";
-                }
+                }*/
 
             }
             else if (campo.TreatmentUnit.Id == "D-2300CD")
@@ -291,7 +291,7 @@ namespace CalcIndep_Carpeta
         }
         public static bool EquipoEsIEC(Beam campo)
         {
-            return equipo(campo).Contains("MEDRANO");
+            return equipo(campo).Contains("MEDRANO") || equipo(campo).Contains("EQ3");
         }
 
         public static VVector restaVectores(VVector v1, VVector v2)
