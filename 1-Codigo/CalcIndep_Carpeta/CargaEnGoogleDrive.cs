@@ -58,7 +58,15 @@ namespace CalcIndep_Carpeta
             });
 
             // Define request parameters.
-            String spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
+            String spreadsheetId;
+            if (Equipo == "Equipo 1" || Equipo == "Equipo 2" || Equipo == "Equipo 3" || Equipo == "Equipo 4")
+            {
+                spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
+            }
+            else if (Equipo == 'Q-Equipo 1' || Equipo == "Q-Equipo 2")
+            {
+                spreadsheetId = "1Z6dTImEfdJjvmungbXOPxYyRJZL0huVGaEfeoelVVoY";
+            }
             String range = "Pacientes " + Equipo + "!A2:J2";
             //String range2 = "Hoja 1!F3:H3";
             var valueRange = new ValueRange();
