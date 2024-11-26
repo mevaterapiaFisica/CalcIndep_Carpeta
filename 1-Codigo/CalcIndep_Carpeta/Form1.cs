@@ -484,6 +484,14 @@ namespace CalcIndep_Carpeta
             {
                 return "EquipoCetro";
             }
+            else if (plan.Beams.First().TreatmentUnit.Id == "QBA_600CD_523")
+            {
+                return "Q_Equipo1";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "EQ2_iX_827")
+            {
+                return "Q_Equipo2";
+            }
             else
             {
                 return null;

@@ -81,7 +81,16 @@ namespace CalcIndep_Carpeta
         public static string crearCarpetaPaciente(string pacienteLastName, string pacienteFirstName, string pacienteId, string cursoId, string planId)
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
-            string pathDirectorio = Properties.Settings.Default.PathPacientes + @"\" + nombreMasID;
+            string pathDirectorio;
+            if (Equipo == 'Q_Equipo1' || Equipo == 'Q_Equipo2')
+            {
+                pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\03_EnPlan" + @"\" + nombreMasID;
+            }
+            else
+            {
+                pathDirectorio = Properties.Settings.Default.PathPacientes + @"\" + nombreMasID;
+            }
+            
             if (!Directory.Exists(pathDirectorio))
             {
                 Directory.CreateDirectory(pathDirectorio);
@@ -98,7 +107,16 @@ namespace CalcIndep_Carpeta
         public static string crearCarpetaPacienteImagenes(string pacienteLastName, string pacienteFirstName, string pacienteId, string cursoId, string planId, string Equipo)
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
-            string pathDirectorio = Properties.Settings.Default.PathImagenesPacientes + @"\" + Equipo + @"\" + nombreMasID;
+            string pathDirectorio;
+            if (Equipo == 'Q_Equipo1' || Equipo == 'Q_Equipo2')
+            {
+                pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\04_DRR" + @"\" + nombreMasID;
+            }
+            else 
+            {
+                pathDirectorio = Properties.Settings.Default.PathImagenesPacientes + @"\" + Equipo + @"\" + nombreMasID;
+            }
+
             if (!Directory.Exists(pathDirectorio))
             {
                 Directory.CreateDirectory(pathDirectorio);

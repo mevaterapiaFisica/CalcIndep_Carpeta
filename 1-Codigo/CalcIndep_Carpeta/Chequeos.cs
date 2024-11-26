@@ -579,6 +579,14 @@ namespace CalcIndep_Carpeta
             {
                 return true;
             }
+            else if (camilla.Contains("QFix") && equipo == "EQ2_iX_827")
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_527")
+            {
+                return true;
+            }
             else
             {
                 return false;

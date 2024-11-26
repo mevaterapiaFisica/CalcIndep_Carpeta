@@ -90,6 +90,14 @@ namespace CalcIndep_Carpeta
             {
                 Equipo = "Medrano";
             }
+            else if (plan.Beams.First().TreatmentUnit.Id == "QBA_600CD_523")
+            {
+                Equipo = "Q_Equipo1";
+            }
+            else if (plan.Beams.First().TreatmentUnit.Id == "EQ2_iX_827")
+            {
+                Equipo = "Q_Equipo2";
+            }
             else
             {
                 MessageBox.Show("El equipo no cuenta con RefToIso\nSe generara txt con corrimientos");

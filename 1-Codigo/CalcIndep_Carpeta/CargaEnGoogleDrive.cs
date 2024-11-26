@@ -59,12 +59,21 @@ namespace CalcIndep_Carpeta
 
             // Define request parameters.
             String spreadsheetId;
-            if (Equipo == "Equipo 1" || Equipo == "Equipo 2" || Equipo == "Equipo 3" || Equipo == "Equipo 4")
+            if (Equipo == "Medrano" || Equipo == "Equipo 2")
             {
                 spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
             }
-            else if (Equipo == 'Q-Equipo 1' || Equipo == "Q-Equipo 2")
+            else if (Equipo == 'Q_Equipo1' || Equipo == "Q_Equipo2")
             {
+                if (Equipo == "Q_Equipo1")
+                { 
+                    Equipo = "Equipo 1"; 
+                }
+                else 
+                { 
+                    Equipo = "Equipo 2"; 
+                }
+
                 spreadsheetId = "1Z6dTImEfdJjvmungbXOPxYyRJZL0huVGaEfeoelVVoY";
             }
             String range = "Pacientes " + Equipo + "!A2:J2";
