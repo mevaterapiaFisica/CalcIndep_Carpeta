@@ -38,9 +38,9 @@ namespace CalcIndep_Carpeta
         Equipo Equipo4_10X = new Equipo(6158, "Equipo4", 22, 0.018, 0.7361, 1, 10);
         Equipo Equipo2_6X = new Equipo(1181, "Equipo2", 13 , 0.0143, 0.6653, 1, 6);
         Equipo EquipoMedrano = new Equipo(2247, "EquipoMedrano", 13, 0.016, 0.6655, 1, 6);
-        Equipo Q_Equipo1_6X = new Equipo(523, "QEquipo1", 14, 0.015, 0.663, 1, 6);
-        Equipo Q_Equipo2_6X = new Equipo(827, "QEquipo2", 16, 0.015, 0.6744, 1, 6);
-        Equipo Q_Equipo2_15X = new Equipo(827, "QEquipo2", 28, 0.017, 0.771, 1, 15);
+        Equipo Q_Equipo1_6X = new Equipo(523, "Q_Equipo1", 14, 0.015, 0.663, 1, 6);
+        Equipo Q_Equipo2_6X = new Equipo(827, "Q_Equipo2", 16, 0.015, 0.6744, 1, 6);
+        Equipo Q_Equipo2_15X = new Equipo(827, "Q_Equipo2", 28, 0.017, 0.771, 1, 15);
 
 
         List<FieldReferencePoint> RefPoints = new List<FieldReferencePoint>();
