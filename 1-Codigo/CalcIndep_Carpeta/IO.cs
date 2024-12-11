@@ -78,11 +78,11 @@ namespace CalcIndep_Carpeta
         /// <param name="maxAttempts">el número máximo que se le concatenará al baseName</param>
         /// <returns></returns>
         /// */
-        public static string crearCarpetaPaciente(string pacienteLastName, string pacienteFirstName, string pacienteId, string cursoId, string planId)
+        public static string crearCarpetaPaciente(string pacienteLastName, string pacienteFirstName, string pacienteId, string cursoId, string planId, string Equipo)
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
             string pathDirectorio;
-            if (Equipo == 'Q_Equipo1' || Equipo == 'Q_Equipo2')
+            if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
             {
                 pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\03_EnPlan" + @"\" + nombreMasID;
             }
@@ -108,7 +108,7 @@ namespace CalcIndep_Carpeta
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
             string pathDirectorio;
-            if (Equipo == 'Q_Equipo1' || Equipo == 'Q_Equipo2')
+            if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
             {
                 pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\04_DRR" + @"\" + nombreMasID;
             }

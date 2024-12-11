@@ -215,7 +215,7 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "CETRO_Fotones_06MV";
             }
-            ëlse if (campo.TreatmentUnit.Id == "QBA_600CD_523")
+            else if (campo.TreatmentUnit.Id == "QBA_600CD_523")
             {
                 equipoString += "Q_Equipo1";
             }
