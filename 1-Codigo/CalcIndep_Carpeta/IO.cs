@@ -82,7 +82,7 @@ namespace CalcIndep_Carpeta
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
             string pathDirectorio;
-            if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
+            if (Equipo == "QBA_600CD_523" || Equipo == "EQ2_iX_827")
             {
                 pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\03_EnPlan" + @"\" + nombreMasID;
             }
@@ -108,7 +108,7 @@ namespace CalcIndep_Carpeta
         {
             string nombreMasID = pacienteLastName.ToUpper() + ", " + pacienteFirstName.ToUpper() + "-" + pacienteId;
             string pathDirectorio;
-            if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
+            if (Equipo == "QBA_600CD_523" || Equipo == "EQ2_iX_827")
             {
                 pathDirectorio = "\\\\10.130.1.253\\FisicaQuilmes\\04_DRR" + @"\" + nombreMasID;
             }

@@ -894,8 +894,18 @@ namespace CalcIndep_Carpeta
 
         public static void exportarAPdf(Patient paciente, PlanningItem plan, Bitmap imagen, List<Structure> estructuras)
         {
+            PlanSetup plan_setup;
+            if (plan.GetType() == typeof(PlanSetup))
+            {
+                plan_setup = (PlanSetup)plan;
+            }
+            else
+            {
+                plan_setup = ((PlanSum)plan).PlanSetups.First();
+            }
+
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id,plan_setup.Beams.First().TreatmentUnit.Id);
             string path = IO.GetUniqueFilename("", nombreMasID + "_Informe", "pdf");
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
             Document Informe = informe(paciente, plan, imagen, estructuras);
@@ -915,8 +925,17 @@ namespace CalcIndep_Carpeta
 
         public static void exportarAPdf(Patient paciente, PlanningItem plan, List<Structure> estructuras)
         {
+            PlanSetup plan_setup;
+            if (plan.GetType() == typeof(PlanSetup))
+            {
+                plan_setup = (PlanSetup)plan;
+            }
+            else
+            {
+                plan_setup = ((PlanSum)plan).PlanSetups.First();
+            }
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan_setup.Beams.First().TreatmentUnit.Id);
             string path = IO.GetUniqueFilename("", nombreMasID + "_Informe", "pdf");
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
             Document Informe = informe(paciente, plan, estructuras);

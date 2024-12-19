@@ -102,7 +102,7 @@ namespace CalcIndep_Carpeta
             {
                 MessageBox.Show("El equipo no cuenta con RefToIso\nSe generara txt con corrimientos");
                 string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-                string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+                string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
                 generarArchivoTxt(paciente, iso, pathDirectorio + @"\" + nombreMasID + "_ISO" + (i + 1).ToString(), plan.TreatmentOrientation);
                 return false;
             }
@@ -187,7 +187,7 @@ namespace CalcIndep_Carpeta
         public static void generarTodosLosPatMove(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)
         {
             List<string> listaTxtsPaths = new List<string>();
-            IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id,plan.Id);
+            IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id,plan.Id, plan.Beams.First().TreatmentUnit.Id);
             if (plan.Beams.First().TreatmentUnit.Id == "Equipo1" || plan.Beams.First().TreatmentUnit.Id == "D-2300CD")
             {
                 MessageBox.Show("No hace falta PatMove para este equipo");
@@ -196,7 +196,7 @@ namespace CalcIndep_Carpeta
             {
                 string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
                 
-                string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+                string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
 
                 List<VVector> isos = crearPPF.listaIsos(plan);
                 int i = 0;

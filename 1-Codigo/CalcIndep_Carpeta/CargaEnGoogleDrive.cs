@@ -58,7 +58,7 @@ namespace CalcIndep_Carpeta
             });
 
             // Define request parameters.
-            String spreadsheetId;
+            String spreadsheetId = "";
             if (Equipo == "Medrano" || Equipo == "Equipo 2")
             {
                 spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";

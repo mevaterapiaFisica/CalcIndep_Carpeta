@@ -121,7 +121,7 @@ namespace CalcIndep_Carpeta
         public static void escribirPPFcompleto(Patient paciente, PlanSetup plan,List<Beam> camposOrdenados)
         {
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
             List<string> ppf = new List<string>();
             ppf = escribirHeader(paciente, plan);
             foreach (Beam campo in camposOrdenados)
