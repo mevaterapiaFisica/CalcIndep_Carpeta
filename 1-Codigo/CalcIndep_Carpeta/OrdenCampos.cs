@@ -147,6 +147,15 @@ namespace CalcIndep_Carpeta
                         
                     }
                 }
+                else if (plan.Beams.First().TreatmentUnit.Id == "EQ2_iX_827" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved)
+                {
+                    string aux = Dcm.MoverDCMEq2Quilmes(paciente, plan, esPlanSuma);
+                    if (aux != "")
+                    {
+                        texto += aux;
+                    }
+
+                }
                 MessageBox.Show(texto);
             }
             catch (Exception)
