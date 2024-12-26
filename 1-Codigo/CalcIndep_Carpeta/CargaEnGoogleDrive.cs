@@ -22,43 +22,54 @@ namespace CalcIndep_Carpeta
         static string ApplicationName = "UploadPatMove";
 
 
-        public static void Cargar(List<object> textoAInsertar,string Equipo)
+        public static void Cargar(List<object> textoAInsertar, string Equipo)
         {
+            // Verifica la conectividad
             Ping p1 = new Ping();
             PingReply PR = p1.Send("drive.google.com");
-            // check when the ping is not success
             if (!PR.Status.ToString().Equals("Success"))
             {
-                MessageBox.Show("No se puede conectar con google drive\nReintentar en un rato");
+                MessageBox.Show("No se puede conectar con Google Drive\nReintentar en un rato");
                 return;
             }
-                UserCredential credential;
-            // Load client secrets.
-            using (var stream =
-                   new FileStream(@"\\ariamevadb-svr\va_data$\Calculo Independiente\credentials.json", FileMode.Open, FileAccess.Read))
+
+            UserCredential credential;
+
+            // Define las rutas base
+            string basePath = @"\\ariamevadb-svr\va_data$\Calculo Independiente\";
+            string credFileName = "credentials.json";
+            string tokenFileName = "token.json";
+
+            // Si Equipo contiene "Q_", cambia las rutas
+            if (Equipo.Contains("Q_"))
             {
-                /* The file token.json stores the user's access and refresh tokens, and is created
-                 automatically when the authorization flow completes for the first time. */
-                string credPath = @"\\ariamevadb-svr\va_data$\Calculo Independiente\token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
-                                    Scopes,
-                                    "user",
-                                    CancellationToken.None,
-                                    new FileDataStore(credPath, true)).Result;
-                //Console.WriteLine("Credential file saved to: " + credPath);
+                basePath = @"\\ariamevadb-svr\va_data$\Calculo Independiente Quilmes\";
             }
 
-            // Create Google Sheets API service.
+            // Construye las rutas completas
+            string credentialsFile = Path.Combine(basePath, credFileName);
+            string tokenPath = Path.Combine(basePath, tokenFileName);
+
+            // Carga las credenciales
+            using (var stream = new FileStream(credentialsFile, FileMode.Open, FileAccess.Read))
+            {
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(tokenPath, true)).Result;
+            }
+
+            // Crea el servicio de Google Sheets API
             var service = new SheetsService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
-
             });
 
-            // Define request parameters.
-            String spreadsheetId = "";
+            // Define el ID de la hoja de cálculo según el Equipo
+            string spreadsheetId = "";
             if (Equipo == "Medrano" || Equipo == "Equipo 2")
             {
                 spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
@@ -66,26 +77,26 @@ namespace CalcIndep_Carpeta
             else if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
             {
                 if (Equipo == "Q_Equipo1")
-                { 
-                    Equipo = "Equipo 1"; 
+                {
+                    Equipo = "Equipo 1";
                 }
-                else 
-                { 
-                    Equipo = "Equipo 2"; 
+                else
+                {
+                    Equipo = "Equipo 2";
                 }
-
                 spreadsheetId = "1Z6dTImEfdJjvmungbXOPxYyRJZL0huVGaEfeoelVVoY";
             }
-            String range = "Pacientes " + Equipo + "!A2:J2";
-            //String range2 = "Hoja 1!F3:H3";
+
+            // Resto del código para enviar los datos a Google Sheets
+            string range = "Pacientes " + Equipo + "!A2:J2";
             var valueRange = new ValueRange();
-            //List<object> lista = new List<object> {"1-123-1","Ca, Jose","2","Right","3","In","4","Up",DateTime.Today.ToShortDateString()};
             valueRange.Values = new List<IList<object>> { textoAInsertar };
 
             var appendRequest = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
             appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
 
-            var appendResponce = appendRequest.Execute();
+            var appendResponse = appendRequest.Execute();
         }
+
     }
 }

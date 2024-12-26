@@ -243,7 +243,7 @@ namespace CalcIndep_Carpeta
                 {
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
-            }
+            }            
             else
             {
                 if (campo.DoseRate != 400)
