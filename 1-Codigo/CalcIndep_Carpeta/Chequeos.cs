@@ -126,7 +126,7 @@ namespace CalcIndep_Carpeta
                 if (distanciaMaxima(plan.Beams.First().IsocenterPosition, campo.IsocenterPosition) > 0.01)
                 {
                     texto += "\nEl plan tiene más de un isocentro";
-                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1")
+                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1" || campo.TreatmentUnit.Id == "EQ2_iX_827")
                     {
                         texto += ". No será posible realizar el 2D/2D match en el equipo. Se sugiere separar en dos planes";
                     }
@@ -243,7 +243,14 @@ namespace CalcIndep_Carpeta
                 {
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
-            }            
+            }
+            else if (campo.ControlPoints.Count > 10)
+            {
+                if (campo.DoseRate != 600)
+                {
+                    texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                }
+            }
             else
             {
                 if (campo.DoseRate != 400)
@@ -621,6 +628,10 @@ namespace CalcIndep_Carpeta
                 return false;
             }
             else if (campo1.ControlPoints.First().JawPositions.Y2 != campo2.ControlPoints.First().JawPositions.Y2)
+            {
+                return false;
+            }
+            else if (campo1.EnergyModeDisplayName != campo2.EnergyModeDisplayName)
             {
                 return false;
             }
