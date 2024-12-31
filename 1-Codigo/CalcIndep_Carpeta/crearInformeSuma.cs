@@ -926,7 +926,7 @@ namespace CalcIndep_Carpeta
         public static void exportarAPdf(Patient paciente, PlanningItem plan, List<Structure> estructuras)
         {
             PlanSetup plan_setup;
-            if (plan.GetType() == typeof(PlanSetup))
+            if (plan is PlanSetup)
             {
                 plan_setup = (PlanSetup)plan;
             }
