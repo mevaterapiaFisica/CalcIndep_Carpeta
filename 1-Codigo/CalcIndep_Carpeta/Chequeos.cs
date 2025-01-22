@@ -244,24 +244,6 @@ namespace CalcIndep_Carpeta
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
             }
-            else if (campo.ControlPoints.Count > 10)
-            {
-                if (campo.TreatmentUnit.Id == "EQ2_iX_827")
-                {
-                    if (campo.DoseRate != 600)
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-                else
-                {
-                    if (campo.DoseRate != 400)
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-
-            }
             else
             {
                 if (campo.DoseRate != 400)

@@ -380,12 +380,12 @@ namespace CalcIndep_Carpeta
                             string nombreArchivo = Path.GetFileName(archivo.Item1);
                             if (nombreArchivo.StartsWith("RP"))
                             {
-                                IO.moverArchivo(archivo.Item1, pathPaciente + @"\" + plan.Id + ".dcm");
+                                IO.moverArchivo(archivo.Item1, pathPlan + @"\" + plan.Id + ".dcm");
                             }
                             else
                             {
                                 File.SetAttributes(archivo.Item1, FileAttributes.Hidden);
-                                IO.moverArchivo(archivo.Item1, pathPaciente + @"\" + archivo.Item2 + ".dcm");
+                                IO.moverArchivo(archivo.Item1, pathPlan + @"\" + archivo.Item2 + ".dcm");
                             }
 
                         }
