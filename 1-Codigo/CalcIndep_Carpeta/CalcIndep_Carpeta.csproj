@@ -126,6 +126,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="EvilDICOM, Version=1.5.1.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EvilDICOM.2.0.0.0\lib\net45\EvilDICOM.dll</HintPath>

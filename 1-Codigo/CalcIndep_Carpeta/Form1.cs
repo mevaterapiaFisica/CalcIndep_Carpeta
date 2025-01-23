@@ -423,24 +423,28 @@ namespace CalcIndep_Carpeta
             {
                 foreach (PlanSetup planSetup in ((PlanSum)plan).PlanSetups)
                 {
-                    string Equipo = NombreEquipo((PlanSetup)plan);
+                    string Equipo = NombreEquipo(planSetup);
                     if (Equipo == null)
                     {
                         MessageBox.Show("No se pueden enviar imágenes a ese equipo");
                     }
                     
-                    if (((PlanSetup)plan).Beams.Any(b=>b.ReferenceImage==null))
+                    if (((PlanSetup)planSetup).Beams.Any(b=>b.ReferenceImage==null))
                     {
                         MessageBox.Show("Una o más imágenes no tiene generadas las DRR. Corregir");
                     }
                     else
                     {
-                        string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
+                        string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, planSetup).Id, planSetup.Id, Equipo);
                         int numero = DRR.GenerarImagenes(planSetup, path, crearInforme.Curso(paciente, planSetup), paciente);
-                        AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente), path);
-                        agregarImagenes.ShowDialog();
-                        numero += agregarImagenes.NumeroDeImagenes;
-                        MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + plan.Id);
+                        List<string> imagenesExtra = ObtenerImagenesPaciente(paciente);                        
+                        if (imagenesExtra.Count > 0)
+                        {
+                            AgregarImagenes agregarImagenes = new AgregarImagenes(ObtenerImagenesPaciente(paciente), path);
+                            agregarImagenes.ShowDialog();
+                            numero += agregarImagenes.NumeroDeImagenes;
+                        }                        
+                        MessageBox.Show("Se generaron y enviaron " + numero.ToString() + " imágenes del plan " + planSetup.Id);
                     }
                 }
             }
