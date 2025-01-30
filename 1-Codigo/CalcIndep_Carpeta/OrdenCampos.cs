@@ -149,7 +149,16 @@ namespace CalcIndep_Carpeta
                 }
                 else if (plan.Beams.First().TreatmentUnit.Id == "EQ2_iX_827" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved)
                 {
-                    string aux = Dcm.MoverDCMEq2Quilmes(paciente, plan, esPlanSuma);
+                    string aux = Dcm.MoverDCMQuilmes(paciente, plan, esPlanSuma);
+                    if (aux != "")
+                    {
+                        texto += aux;
+                    }
+
+                }
+                else if (plan.Beams.First().TreatmentUnit.Id == "QBA_600CD_523" && plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved)
+                {
+                    string aux = Dcm.MoverDCMQuilmes(paciente, plan, esPlanSuma);
                     if (aux != "")
                     {
                         texto += aux;

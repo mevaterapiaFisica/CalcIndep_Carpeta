@@ -583,7 +583,7 @@ namespace CalcIndep_Carpeta
             {
                 return true;
             }
-            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_527")
+            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_523")
             {
                 return true;
             }

@@ -74,7 +74,7 @@ namespace CalcIndep_Carpeta
             {
                 spreadsheetId = "1HvxYpnQAe3eklrKRYf79mRkSb5R7ThePgOR7kglN-bE";
             }
-            else if (Equipo == "Q_Equipo1" || Equipo == "Q_Equipo2")
+            else if (Equipo.Contains("Q_"))
             {
                 if (Equipo == "Q_Equipo1")
                 {

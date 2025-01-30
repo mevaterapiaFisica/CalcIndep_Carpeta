@@ -312,9 +312,19 @@ namespace CalcIndep_Carpeta
             }
         }
 
-        public static List<Tuple<string, string>> ObtenerDCMEq2Quilmes(Patient paciente, PlanSetup plan)
+        public static List<Tuple<string, string>> ObtenerDCMQuilmes(Patient paciente, PlanSetup plan)
         {
-            List<string> ListaDCMPacienteEq3 = ListaDCMPacienteEq2Quilmes(paciente);
+            string equipo_id = plan.Beams.First().TreatmentUnit.Id;
+            List<string> ListaDCMPacienteEq3;
+            if (equipo_id == "QBA_600CD_523")
+            {
+                ListaDCMPacienteEq3 = ListaDCMPacienteEq1Quilmes(paciente);
+            }
+            else
+            {
+                ListaDCMPacienteEq3 = ListaDCMPacienteEq2Quilmes(paciente);
+            }
+            
             string _dcmRP = obtenerDCMRPEq3(paciente, plan, ListaDCMPacienteEq3);
             List<Tuple<string, string>> listaDCMs = new List<Tuple<string, string>>();
             Dcm dcmRP = new Dcm();
@@ -350,10 +360,10 @@ namespace CalcIndep_Carpeta
             }
             return listaDCMs;
         }
-        public static string MoverDCMEq2Quilmes(Patient paciente, PlanSetup plan, bool esPlanSuma, bool vieneDeEq1oEq4 = false, string equipoOrigen = null, string equipoDestino = null)
+        public static string MoverDCMQuilmes(Patient paciente, PlanSetup plan, bool esPlanSuma)
         {
             //string path = obtenerDCMRPEq3(paciente, plan,listaDCMPacienteEq3(paciente));
-            List<Tuple<string, string>> listaDCM = ObtenerDCMEq2Quilmes(paciente, plan);
+            List<Tuple<string, string>> listaDCM = ObtenerDCMQuilmes(paciente, plan);
             string mensaje = "";
             if (listaDCM != null && listaDCM.Count > 0)
             {
@@ -365,7 +375,18 @@ namespace CalcIndep_Carpeta
                     MessageBox.Show("El dígito de reingreso en el curso es " + reingresoCurso + " y difiere del hallado en la HC del paciente en Eclipse. Se toma el del curso para el nombre de la carpeta en DicomRT");
                     IdCorregida = paciente.Id.Remove(paciente.Id.Length - 1, 1) + reingresoCurso;
                 }
-                string pathPaciente = "\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0-Inicios\\1_Mevaterapia" + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
+                string pathEquipo;
+                string equipo_id = plan.Beams.First().TreatmentUnit.Id;
+                if (equipo_id == "QBA_600CD_523")
+                {
+                    pathEquipo = "\\\\10.130.1.253\\FisicaQuilmes\\01_Equipo1\\0-Inicios\\1_Mevaterapia";
+                }
+                else
+                {
+                    pathEquipo = "\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0-Inicios\\1_Mevaterapia";
+                }
+
+                string pathPaciente = pathEquipo + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
                 IO.crearCarpeta(pathPaciente);
 
                 if (esPlanSuma)
@@ -457,14 +478,6 @@ namespace CalcIndep_Carpeta
                 {
                     pathPaciente = Properties.Settings.Default.PathDCMEquipo2 + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
                 }
-                else if (plan.Beams.First().TreatmentUnit.Id == "EQ2_iX_827")
-                {
-                    pathPaciente = "\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0-Inicios\\1_Mevaterapia" + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
-                }
-                else if (plan.Beams.First().TreatmentUnit.Id == "QBA_600CD_523")
-                {
-                    pathPaciente = "\\\\10.130.1.253\\FisicaQuilmes\\01_Equipo1\\0-Inicios\\1_Mevaterapia" + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
-                }
                 else if (vieneDeEq1oEq4)
                 {
                     /*if (equipoDestino == "2100CMLC")
@@ -530,6 +543,17 @@ namespace CalcIndep_Carpeta
         public static List<string> ListaDCMPacienteEq2Quilmes(Patient paciente)
         {
             List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0_ParaEnviar").Where(f => f.Contains(paciente.Id)).ToList();
+            string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
+                                lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
+            if (MessageBox.Show("Se encontraron " + contenido + "\n¿Desea exportarlos?", "Exportar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                return lista;
+            }
+            return new List<string>();
+        }
+        public static List<string> ListaDCMPacienteEq1Quilmes(Patient paciente)
+        {
+            List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\01_Equipo1\\0_ParaEnviar").Where(f => f.Contains(paciente.Id)).ToList();
             string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
                                 lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
             if (MessageBox.Show("Se encontraron " + contenido + "\n¿Desea exportarlos?", "Exportar", MessageBoxButtons.YesNo) == DialogResult.Yes)
