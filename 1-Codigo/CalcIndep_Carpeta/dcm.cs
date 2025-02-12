@@ -36,7 +36,7 @@ namespace CalcIndep_Carpeta
         public bool coincide(Patient paciente, PlanSetup plan)
         {
             List<Beam> camposECL = plan.Beams.Where(b => b.IsSetupField == false).ToList();
-            if (Apellido != paciente.LastName || Nombre != paciente.FirstName || ID != paciente.Id || planID != plan.Id || camposDCM.Count != camposECL.Count())
+            if (ID != paciente.Id || planID != plan.Id || camposDCM.Count != camposECL.Count())
             {
                 //MessageBox.Show(Apellido + " " + Nombre + " " + ID + " " + camposDCM.Count.ToString());
                 //MessageBox.Show(Path.GetFileName(path) + " no coincide 1");
@@ -315,15 +315,7 @@ namespace CalcIndep_Carpeta
         public static List<Tuple<string, string>> ObtenerDCMQuilmes(Patient paciente, PlanSetup plan)
         {
             string equipo_id = plan.Beams.First().TreatmentUnit.Id;
-            List<string> ListaDCMPacienteEq3;
-            if (equipo_id == "QBA_600CD_523")
-            {
-                ListaDCMPacienteEq3 = ListaDCMPacienteEq1Quilmes(paciente);
-            }
-            else
-            {
-                ListaDCMPacienteEq3 = ListaDCMPacienteEq2Quilmes(paciente);
-            }
+            List<string> ListaDCMPacienteEq3 = ListaDCMPacienteQuilmes(paciente);            
             
             string _dcmRP = obtenerDCMRPEq3(paciente, plan, ListaDCMPacienteEq3);
             List<Tuple<string, string>> listaDCMs = new List<Tuple<string, string>>();
@@ -540,9 +532,9 @@ namespace CalcIndep_Carpeta
             }
             return new List<string>();
         }
-        public static List<string> ListaDCMPacienteEq2Quilmes(Patient paciente)
+        public static List<string> ListaDCMPacienteQuilmes(Patient paciente)
         {
-            List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0_ParaEnviar").Where(f => f.Contains(paciente.Id)).ToList();
+            List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\12_ParaEnviar\\Pacientes").Where(f => f.Contains(paciente.Id)).ToList();
             string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
                                 lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
             if (MessageBox.Show("Se encontraron " + contenido + "\n¿Desea exportarlos?", "Exportar", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -551,20 +543,7 @@ namespace CalcIndep_Carpeta
             }
             return new List<string>();
         }
-        public static List<string> ListaDCMPacienteEq1Quilmes(Patient paciente)
-        {
-            List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\01_Equipo1\\0_ParaEnviar").Where(f => f.Contains(paciente.Id)).ToList();
-            string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
-                                lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
-            if (MessageBox.Show("Se encontraron " + contenido + "\n¿Desea exportarlos?", "Exportar", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                return lista;
-            }
-            return new List<string>();
-        }
-
-
-
+        
     }
 
     public struct campoDCM
