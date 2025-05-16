@@ -40,7 +40,7 @@ namespace CalcIndep_Carpeta
             header[13] += paciente.Id;
             header[15] += DateTime.Today.ToString("ddMMyyyy");
             header[16] += medico;
-            header[19] += equipo(plan.Beams.First());
+            header[19] += equipo(plan.Beams.Where(b=>!b.IsSetupField).First());
             return header;
         }
 

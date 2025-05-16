@@ -387,7 +387,7 @@ namespace CalcIndep_Carpeta
 
         public static List<string> listaDCMPacienteEq3(Patient paciente)
         {
-            List<string> lista = Directory.GetFiles(Properties.Settings.Default.PathDCMAsignarEq2).Where(f => f.Contains(paciente.Id)).ToList();
+            List<string> lista = Directory.GetFiles(Properties.Settings.Default.PathDCMAsignarEq3).Where(f => f.Contains(paciente.Id)).ToList();
             string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
                                 lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
             if (MessageBox.Show("Se encontraron " + contenido  + "\n¿Desea exportarlos?","Exportar",MessageBoxButtons.YesNo)==DialogResult.Yes)
@@ -414,3 +414,5 @@ namespace CalcIndep_Carpeta
 
 
 }
+
+
