@@ -58,7 +58,7 @@ namespace CalcIndep_Carpeta
         public static void exportarAPdf(Document report, Patient paciente, PlanSetup plan, string usuario, List<CampoCI> camposCI)
         {
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
 
 
             string path =  IO.GetUniqueFilename(pathDirectorio, @"\" + nombreMasID + "_CI", "pdf");
@@ -79,7 +79,7 @@ namespace CalcIndep_Carpeta
                 output.Add(campoCI.ID + ";" + campoCI.sesgoRel + ";" + campoCI.sesgoAbs);
             }
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
 
 
             string path = pathDirectorio + @"\" + nombreMasID + "_CI.txt";
@@ -214,6 +214,14 @@ namespace CalcIndep_Carpeta
             else if (campo.TreatmentUnit.Id == "PBA_6EX_730")
             {
                 equipoString += "CETRO_Fotones_06MV";
+            }
+            else if (campo.TreatmentUnit.Id == "QBA_600CD_523")
+            {
+                equipoString += "Q_Equipo1";
+            }
+            else if (campo.TreatmentUnit.Id == "EQ2_iX_827")
+            {
+                equipoString += "Q_Equipo2";
             }
             return equipoString;
         }
