@@ -846,7 +846,7 @@ namespace CalcIndep_Carpeta
         public static void exportarAPdf(Patient paciente, PlanSetup plan, Bitmap imagen, List<Structure> estructuras)
         {
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
             string path = IO.GetUniqueFilename("", nombreMasID + "_Informe", "pdf");
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
             Document Informe = informe(paciente, plan, imagen, estructuras);
@@ -867,7 +867,7 @@ namespace CalcIndep_Carpeta
         public static void exportarAPdf(Patient paciente, PlanSetup plan, List<Structure> estructuras)
         {
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
             string path = IO.GetUniqueFilename("", nombreMasID + "_Informe", "pdf");
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
             Document Informe = informe(paciente, plan, estructuras);

@@ -121,7 +121,7 @@ namespace CalcIndep_Carpeta
         public static void escribirPPFcompleto(Patient paciente, PlanSetup plan,List<Beam> camposOrdenados)
         {
             string nombreMasID = paciente.LastName.ToUpper() + ", " + paciente.FirstName.ToUpper() + "-" + paciente.Id;
-            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id);
+            string pathDirectorio = IO.crearCarpetaPaciente(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, plan.Beams.First().TreatmentUnit.Id);
             List<string> ppf = new List<string>();
             ppf = escribirHeader(paciente, plan);
             foreach (Beam campo in camposOrdenados)
@@ -287,11 +287,42 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "MEDRANO_Fotones_06MV";
             }
+            else if (campo.TreatmentUnit.Id == "EQ2_iX_827")
+            {
+                equipoString += "QUILMES_EQ2";
+                {
+                    if (campo.EnergyModeDisplayName == "6X")
+                    {
+                        equipoString += "_Fotones_06MV";
+                    }
+                    else if (campo.EnergyModeDisplayName == "15X")
+                    {
+                        equipoString += "_Fotones_15MV";
+                    }
+                    else if (campo.EnergyModeDisplayName == "6E")
+                    {
+                        equipoString += "_Electrones_06MeV";
+                    }
+                    else if (campo.EnergyModeDisplayName == "9E")
+                    {
+                        equipoString += "_Electrones_09MeV";
+                    }
+                    else if (campo.EnergyModeDisplayName == "12E")
+                    {
+                        equipoString += "_Electrones_12MeV";
+                    }                    
+                }
+            }
+            else if (campo.TreatmentUnit.Id == "QBA_600CD_523")
+            {
+                equipoString += "QUILMES_Fotones_06MV";
+            }
             return equipoString;
+
         }
         public static bool EquipoEsIEC(Beam campo)
         {
-            return equipo(campo).Contains("MEDRANO") || equipo(campo).Contains("EQ3");
+            return equipo(campo).Contains("MEDRANO") || equipo(campo).Contains("EQ3") || equipo(campo).Contains("QUILMES");
         }
 
         public static VVector restaVectores(VVector v1, VVector v2)

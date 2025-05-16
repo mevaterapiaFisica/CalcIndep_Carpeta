@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7051DFD6-C633-40A1-81E3-BD3901439CAD}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>CalcIndep_Carpeta</RootNamespace>
     <AssemblyName>CalcIndep_Carpeta</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -123,9 +123,10 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="EvilDICOM, Version=1.5.1.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EvilDICOM.2.0.0.0\lib\net45\EvilDICOM.dll</HintPath>
@@ -219,13 +220,13 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="VMS.TPS.Common.Model.API">
-      <HintPath>\\fisica0\centro_de_datos2018\000_Centro de Datos 2021\12-Software propio\1-En desarrollo\Proyecto Chequeos\PruebaTreeListView\bin\x64\Debug\VMS.TPS.Common.Model.API.dll</HintPath>
+      <HintPath>\\Ariamevadb-svr\va_data$\Calculo Independiente\VMS.TPS.Common.Model.API.dll</HintPath>
     </Reference>
     <Reference Include="VMS.TPS.Common.Model.Interface">
-      <HintPath>\\fisica0\centro_de_datos2018\000_Centro de Datos 2021\12-Software propio\1-En desarrollo\Proyecto Chequeos\PruebaTreeListView\bin\x64\Debug\VMS.TPS.Common.Model.Interface.dll</HintPath>
+      <HintPath>\\Ariamevadb-svr\va_data$\Calculo Independiente\VMS.TPS.Common.Model.Interface.dll</HintPath>
     </Reference>
     <Reference Include="VMS.TPS.Common.Model.Types">
-      <HintPath>\\fisica0\centro_de_datos2018\000_Centro de Datos 2021\12-Software propio\1-En desarrollo\Proyecto Chequeos\PruebaTreeListView\bin\x64\Debug\VMS.TPS.Common.Model.Types.dll</HintPath>
+      <HintPath>\\Ariamevadb-svr\va_data$\Calculo Independiente\VMS.TPS.Common.Model.Types.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

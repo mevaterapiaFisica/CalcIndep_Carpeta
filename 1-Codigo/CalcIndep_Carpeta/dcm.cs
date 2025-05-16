@@ -36,7 +36,7 @@ namespace CalcIndep_Carpeta
         public bool coincide(Patient paciente, PlanSetup plan)
         {
             List<Beam> camposECL = plan.Beams.Where(b => b.IsSetupField == false).ToList();
-            if (Apellido != paciente.LastName || Nombre != paciente.FirstName || ID != paciente.Id || planID != plan.Id || camposDCM.Count != camposECL.Count())
+            if (ID != paciente.Id || planID != plan.Id || camposDCM.Count != camposECL.Count())
             {
                 //MessageBox.Show(Apellido + " " + Nombre + " " + ID + " " + camposDCM.Count.ToString());
                 //MessageBox.Show(Path.GetFileName(path) + " no coincide 1");
@@ -312,6 +312,142 @@ namespace CalcIndep_Carpeta
             }
         }
 
+        public static List<Tuple<string, string>> ObtenerDCMQuilmes(Patient paciente, PlanSetup plan)
+        {
+            string equipo_id = plan.Beams.First().TreatmentUnit.Id;
+            List<string> ListaDCMPacienteEq3 = ListaDCMPacienteQuilmes(paciente);            
+            
+            string _dcmRP = obtenerDCMRPEq3(paciente, plan, ListaDCMPacienteEq3);
+            List<Tuple<string, string>> listaDCMs = new List<Tuple<string, string>>();
+            Dcm dcmRP = new Dcm();
+            Dcm dcmOtro = new Dcm();
+            if (_dcmRP != "No se encontró coincidencia")
+            {
+                dcmRP.crear(_dcmRP);
+                listaDCMs.Add(new Tuple<string, string>(_dcmRP, dcmRP.UID));
+                foreach (string dcmPath in ListaDCMPacienteEq3.Where(f => Path.GetFileName(f).StartsWith("RI")))
+                {
+                    dcmOtro.crearOtro(dcmPath);
+                    if (dcmRP.UID == dcmOtro.PlanUID)
+                    {
+                        listaDCMs.Add(new Tuple<string, string>(dcmPath, dcmOtro.UID));
+                    }
+                }
+                foreach (string dcmPath in ListaDCMPacienteEq3.Where(f => Path.GetFileName(f).StartsWith("RS")))
+                {
+                    dcmOtro.crearOtro(dcmPath);
+                    if (dcmRP.FORUID == dcmOtro.FORUID)
+                    {
+                        listaDCMs.Add(new Tuple<string, string>(dcmPath, dcmOtro.UID));
+                    }
+                }
+                foreach (string dcmPath in ListaDCMPacienteEq3.Where(f => Path.GetFileName(f).StartsWith("CT")))
+                {
+                    dcmOtro.crearOtro(dcmPath);
+                    if (dcmRP.FORUID == dcmOtro.FORUID)
+                    {
+                        listaDCMs.Add(new Tuple<string, string>(dcmPath, dcmOtro.UID));
+                    }
+                }
+            }
+            return listaDCMs;
+        }
+        public static string MoverDCMQuilmes(Patient paciente, PlanSetup plan, bool esPlanSuma)
+        {
+            //string path = obtenerDCMRPEq3(paciente, plan,listaDCMPacienteEq3(paciente));
+            List<Tuple<string, string>> listaDCM = ObtenerDCMQuilmes(paciente, plan);
+            string mensaje = "";
+            if (listaDCM != null && listaDCM.Count > 0)
+            {
+                string reingresoCurso = plan.Course.Id[1].ToString();
+                string reingresoID = paciente.Id.Last().ToString();
+                string IdCorregida = paciente.Id;
+                if (reingresoCurso != reingresoID)
+                {
+                    MessageBox.Show("El dígito de reingreso en el curso es " + reingresoCurso + " y difiere del hallado en la HC del paciente en Eclipse. Se toma el del curso para el nombre de la carpeta en DicomRT");
+                    IdCorregida = paciente.Id.Remove(paciente.Id.Length - 1, 1) + reingresoCurso;
+                }
+                string pathEquipo;
+                string equipo_id = plan.Beams.First().TreatmentUnit.Id;
+                if (equipo_id == "QBA_600CD_523")
+                {
+                    pathEquipo = "\\\\10.130.1.253\\FisicaQuilmes\\01_Equipo1\\0-Inicios\\1_Mevaterapia";
+                }
+                else
+                {
+                    pathEquipo = "\\\\10.130.1.253\\FisicaQuilmes\\02_Equipo2\\0-Inicios\\1_Mevaterapia";
+                }
+
+                string pathPaciente = pathEquipo + @"\" + paciente.LastName.ToUpper() + ", " + paciente.FirstName + " " + IdCorregida;
+                IO.crearCarpeta(pathPaciente);
+
+                if (esPlanSuma)
+                {
+                    try
+                    {
+                        string pathPlan = pathPaciente + @"\" + plan.Id;
+                        IO.crearCarpeta(pathPlan);
+                        IO.crearCarpeta(pathPlan + @"\BACKUP");
+                        foreach (Tuple<string, string> archivo in listaDCM)
+                        {
+                            string nombreArchivo = Path.GetFileName(archivo.Item1);
+                            if (nombreArchivo.StartsWith("RP"))
+                            {
+                                IO.moverArchivo(archivo.Item1, pathPlan + @"\" + plan.Id + ".dcm");
+                            }
+                            else
+                            {
+                                File.SetAttributes(archivo.Item1, FileAttributes.Hidden);
+                                IO.moverArchivo(archivo.Item1, pathPlan + @"\" + archivo.Item2 + ".dcm");
+                            }
+
+                        }
+                        mensaje += "Se movieron " + listaDCM.Where(t => Path.GetFileName(t.Item1).StartsWith("RP")).Count() + " planes" + listaDCM.Where(t => Path.GetFileName(t.Item1).StartsWith("RS")).Count() + " estructuras \n" +
+                                listaDCM.Where(t => Path.GetFileName(t.Item1).StartsWith("RI")).Count() + " DRRs y " + listaDCM.Where(t => Path.GetFileName(t.Item1).StartsWith("CT")).Count() + " cortes tomográficos";
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("No se puede acceder a la carpeta\n" + e.ToString());
+                    }
+
+
+                }
+                else
+                {
+                    try
+                    {
+                        IO.crearCarpeta(pathPaciente + @"\BACKUP");
+                        foreach (Tuple<string, string> archivo in listaDCM)
+                        {
+                            string nombreArchivo = Path.GetFileName(archivo.Item1);
+                            if (nombreArchivo.StartsWith("RP"))
+                            {
+                                IO.moverArchivo(archivo.Item1, pathPaciente + @"\" + plan.Id + ".dcm");
+                            }
+                            else
+                            {
+                                File.SetAttributes(archivo.Item1, FileAttributes.Hidden);
+                                IO.moverArchivo(archivo.Item1, pathPaciente + @"\" + archivo.Item2 + ".dcm");
+                            }
+
+
+                        }
+                        mensaje += " y se movieron " + listaDCM.Count + " archivos";
+
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("No se puede acceder a la carpeta\n" + e.ToString());
+                    }
+                }
+                return mensaje;
+            }
+            else
+            {
+                return mensaje;
+            }
+        }
+
         public static bool moverDCM(Patient paciente, PlanSetup plan, bool esPlanSuma, bool vieneDeEq1oEq4 = false, string equipoOrigen = null, string equipoDestino = null)
         {
             string path = obtenerDCM(paciente, plan);
@@ -396,9 +532,18 @@ namespace CalcIndep_Carpeta
             }
             return new List<string>();
         }
-
-
-
+        public static List<string> ListaDCMPacienteQuilmes(Patient paciente)
+        {
+            List<string> lista = Directory.GetFiles("\\\\10.130.1.253\\FisicaQuilmes\\12_ParaEnviar\\Pacientes").Where(f => f.Contains(paciente.Id)).ToList();
+            string contenido = lista.Where(t => Path.GetFileName(t).StartsWith("RP")).Count() + " planes " + lista.Where(t => Path.GetFileName(t).StartsWith("RS")).Count() + " estructuras \n" +
+                                lista.Where(t => Path.GetFileName(t).StartsWith("RI")).Count() + " DRRs y " + lista.Where(t => Path.GetFileName(t).StartsWith("CT")).Count() + " cortes tomográficos";
+            if (MessageBox.Show("Se encontraron " + contenido + "\n¿Desea exportarlos?", "Exportar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                return lista;
+            }
+            return new List<string>();
+        }
+        
     }
 
     public struct campoDCM
