@@ -762,9 +762,29 @@ namespace CalcIndep_Carpeta
             Estilos.formatearSeccion(seccion);
             var parrafoLogo = seccion.AddParagraph();
             parrafoLogo.Format.Alignment = ParagraphAlignment.Right;
-            var Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
+            PlanSetup plan_setup;
+            if (plan.GetType() == typeof(ExternalPlanSetup))
+            {
+                plan_setup = (PlanSetup)plan;
+            }
+            else
+            {
+                plan_setup = ((PlanSum)plan).PlanSetups.First();
+            }
+            Equipo equipo = Equipo.seleccionarEquipo(plan_setup.Beams.First().TreatmentUnit.Id);
+            MigraDoc.DocumentObjectModel.Shapes.Image Logo;
+            if (equipo.Centro != "Castelar")
+            {
+                Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
+                seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
+            }
+            else
+            {
+                Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoCastelar.png");
+                seccion.AddParagraph("Centro de Radiaciones Castelar", "Titulo");
+            }
+
             Logo.Height = 70;
-            seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
 
 
             seccion.AddParagraph("Informe Físico del tratamiento realizado", "Titulo");
@@ -836,9 +856,29 @@ namespace CalcIndep_Carpeta
             Estilos.formatearSeccion(seccion);
             var parrafoLogo = seccion.AddParagraph();
             parrafoLogo.Format.Alignment = ParagraphAlignment.Right;
-            var Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
+            PlanSetup plan_setup;
+            if (plan.GetType() == typeof(ExternalPlanSetup))
+            {
+                plan_setup = (PlanSetup)plan;
+            }
+            else
+            {
+                plan_setup = ((PlanSum)plan).PlanSetups.First();
+            }
+            Equipo equipo = Equipo.seleccionarEquipo(plan_setup.Beams.First().TreatmentUnit.Id);
+            MigraDoc.DocumentObjectModel.Shapes.Image Logo;
+            if (equipo.Centro != "Castelar")
+            {
+                Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoMeva.png");
+                seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
+            }
+            else
+            {
+                Logo = parrafoLogo.AddImage(Properties.Settings.Default.PathPrograma + @"\" + "LogoCastelar.png");
+                seccion.AddParagraph("Centro de Radiaciones Castelar", "Titulo");
+            }
+
             Logo.Height = 70;
-            seccion.AddParagraph("Mevaterapia Oncología Radiante", "Titulo");
 
 
             seccion.AddParagraph("Informe Físico del tratamiento realizado", "Titulo");

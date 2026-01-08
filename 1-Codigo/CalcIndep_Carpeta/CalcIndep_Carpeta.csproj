@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7051DFD6-C633-40A1-81E3-BD3901439CAD}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>CalcIndep_Carpeta</RootNamespace>
     <AssemblyName>CalcIndep_Carpeta</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -127,6 +127,16 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EvilDICOM, Version=1.5.1.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EvilDICOM.2.0.0.0\lib\net45\EvilDICOM.dll</HintPath>
@@ -262,6 +272,8 @@
     </Compile>
     <Compile Include="dcm.cs" />
     <Compile Include="DRR.cs" />
+    <Compile Include="Haz.cs" />
+    <Compile Include="Equipo.cs" />
     <Compile Include="Estilos.cs" />
     <Compile Include="EstructurasDVHInforme.cs">
       <SubType>Form</SubType>

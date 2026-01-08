@@ -126,7 +126,7 @@ namespace CalcIndep_Carpeta
                 if (distanciaMaxima(plan.Beams.First().IsocenterPosition, campo.IsocenterPosition) > 0.01)
                 {
                     texto += "\nEl plan tiene más de un isocentro";
-                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1" || campo.TreatmentUnit.Id == "EQ2_iX_827")
+                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1" || campo.TreatmentUnit.Id == "Equipo3" || campo.TreatmentUnit.Id == "EQ2_iX_827")
                     {
                         texto += ". No será posible realizar el 2D/2D match en el equipo. Se sugiere separar en dos planes";
                     }
@@ -248,7 +248,20 @@ namespace CalcIndep_Carpeta
             {
                 if (campo.DoseRate != 400)
                 {
-                    texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    if (campo.TreatmentUnit.Id == "CRC_EQ1" && campo.DoseRate != 320)
+                    {
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    }
+                    else if (campo.TreatmentUnit.Id == "Varian-600C" && campo.DoseRate != 240)
+                    {
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    }
+                    else if (campo.TreatmentUnit.Id == "6oo C/D" && campo.DoseRate != 300)
+                    {
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    }
+                    else
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
             }
             return texto;
@@ -535,6 +548,22 @@ namespace CalcIndep_Carpeta
                 return true;
             }
             else if (camilla.Contains("Unipanel") && equipo == "CL21EX")
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "CRC_EQ1")
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "Varian-600C")
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "600 C / D")     //Equipo 1 SJ
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "Varian 21 EX")  //Equipo 2 SJ
             {
                 return true;
             }

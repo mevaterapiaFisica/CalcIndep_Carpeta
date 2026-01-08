@@ -396,8 +396,8 @@ namespace CalcIndep_Carpeta
             
             if (plan is PlanSetup)
             {
-                string Equipo = NombreEquipo((PlanSetup)plan);
-                if (Equipo == null)
+                Equipo equipo = Equipo.seleccionarEquipo(((PlanSetup)plan).Beams.First().TreatmentUnit.Id);
+                if (equipo == null)
                 {
                     MessageBox.Show("No se pueden enviar imágenes a ese equipo");
                 }
@@ -407,7 +407,7 @@ namespace CalcIndep_Carpeta
                 }
                 else
                 {
-                    string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, Equipo);
+                    string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, plan).Id, plan.Id, equipo.DicomID);
                     int numero = DRR.GenerarImagenes((PlanSetup)plan, path, crearInforme.Curso(paciente, plan), paciente);
                     List<string> imagenesExtra = ObtenerImagenesPaciente(paciente);
                     if (imagenesExtra.Count>0)
@@ -423,8 +423,8 @@ namespace CalcIndep_Carpeta
             {
                 foreach (PlanSetup planSetup in ((PlanSum)plan).PlanSetups)
                 {
-                    string Equipo = NombreEquipo(planSetup);
-                    if (Equipo == null)
+                    Equipo equipo = Equipo.seleccionarEquipo(((PlanSetup)plan).Beams.First().TreatmentUnit.Id);
+                    if (equipo == null)
                     {
                         MessageBox.Show("No se pueden enviar imágenes a ese equipo");
                     }
@@ -435,7 +435,7 @@ namespace CalcIndep_Carpeta
                     }
                     else
                     {
-                        string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, planSetup).Id, planSetup.Id, Equipo);
+                        string path = IO.crearCarpetaPacienteImagenes(paciente.LastName, paciente.FirstName, paciente.Id, crearInforme.Curso(paciente, planSetup).Id, planSetup.Id, equipo.DicomID);
                         int numero = DRR.GenerarImagenes(planSetup, path, crearInforme.Curso(paciente, planSetup), paciente);
                         List<string> imagenesExtra = ObtenerImagenesPaciente(paciente);                        
                         if (imagenesExtra.Count > 0)

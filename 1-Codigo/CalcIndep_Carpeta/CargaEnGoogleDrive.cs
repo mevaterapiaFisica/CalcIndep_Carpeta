@@ -22,16 +22,57 @@ namespace CalcIndep_Carpeta
         static string ApplicationName = "UploadPatMove";
 
 
-        public static void Cargar(List<object> textoAInsertar, string Equipo)
+        public static void SubirADriveOGuardarLocal(List<object> textoAInsertar, string Equipo)
+        {
+            try
+            {
+                using (Ping p1 = new Ping())
+                {
+                    // Importante: Send puede lanzar una excepción antes de retornar un valor
+                    PingReply PR = p1.Send("8.8.8.8", 2000); // Usar IP de Google es más rápido que DNS
+
+                    if (PR.Status != IPStatus.Success)
+                    {
+                        //MessageBox.Show("No se puede conectar con Google Drive. Estado: " + PR.Status);
+                        GuardarEnArchivoLocal(textoAInsertar, Equipo);
+                    }
+                    SubirADrive(textoAInsertar, Equipo);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Esto atrapará el error de "No hay internet" o "DNS no resuelto"
+                //MessageBox.Show("Sin acceso a la red. Iniciando modo offline...\nDetalle: " + ex.Message);
+
+                // AQUÍ ES DONDE LLAMAS A TU NUEVA FUNCIÓN DE GUARDADO LOCAL
+                //GuardarEnArchivoLocal(textoAInsertar, Equipo);
+            }
+        }
+
+        private static void GuardarEnArchivoLocal(List<object> textoAInsertar, string equipo)
+        {
+            // Generar un nombre único para cada envío
+            string usuario = Environment.UserName;
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
+            string fileName = $"corrimientos_{equipo}_{usuario}_{timestamp}.csv";
+
+            string fullPath = Path.Combine(@"\\ARIAMEVADB-SVR\va_data$\Calculo Independiente\Corrimientos", fileName);
+
+            // Guardar el archivo (se crea, se escribe y se cierra inmediatamente)
+            File.WriteAllText(fullPath, string.Join(";",textoAInsertar.Select(o => o?.ToString() ?? string.Empty).ToArray()));
+            MessageBox.Show("No se pudo conectar con RefToIso.\nEl archivo se guardó de forma local");
+        }
+
+        public static void SubirADrive(List<object> textoAInsertar, string Equipo)
         {
             // Verifica la conectividad
-            Ping p1 = new Ping();
+            /*Ping p1 = new Ping();
             PingReply PR = p1.Send("drive.google.com");
             if (!PR.Status.ToString().Equals("Success"))
             {
                 MessageBox.Show("No se puede conectar con Google Drive\nReintentar en un rato");
                 return;
-            }
+            }*/
 
             UserCredential credential;
 

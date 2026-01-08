@@ -107,7 +107,7 @@ namespace CalcIndep_Carpeta
                 return false;
             }
             List<object> textoAEnviar = new List<object> { paciente.Id, paciente.LastName.ToUpper() + ", " + paciente.FirstName + "_" + plan.Id, "Iso " + (i + 1).ToString(), desplazX.ToString(), sentidoX, desplazY.ToString(), sentidoY, desplazZ.ToString(), sentidoZ, DateTime.Today.ToString("MM/dd/yyyy",CultureInfo.InvariantCulture),"Eclipse" };
-            CargaEnGoogleDrive.Cargar(textoAEnviar,Equipo);
+            CargaEnGoogleDrive.SubirADriveOGuardarLocal(textoAEnviar,Equipo);
             return true;
         }
         public static void enviarTodosLosCorrimientos(Patient paciente, PlanSetup plan, List<VVector> isosListos = null, bool chequearIsos = false)

@@ -14,6 +14,7 @@ namespace CalcIndep_Carpeta
         [STAThread]
         static void Main()
         {
+            //var equipos = Equipo.LeerArchivo();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

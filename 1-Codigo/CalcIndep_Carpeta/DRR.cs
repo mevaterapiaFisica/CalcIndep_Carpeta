@@ -207,7 +207,7 @@ namespace CalcIndep_Carpeta
             bordesCampo(bitmap, x1, x2, y1, y2, long1cm, esSetup);
             agregarLineasHorizontales(bitmap, long1cm);
             agregarLineasVerticales(bitmap, long1cm);
-            if (!esSetup && MLCs != null)
+            if (!esSetup && MLCs != null && MLCs.Length>0)
             {
                 dibujarMLC(bitmap, MLCs, x1, x2, y1, y2, long1cm);
             }

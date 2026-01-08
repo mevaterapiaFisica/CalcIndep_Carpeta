@@ -27,6 +27,7 @@ namespace CalcIndep_Carpeta
             {
                 medico = plan.PlanningApprover;
             }
+            
             List<string> header = new List<string>();
             header = File.ReadAllLines(Properties.Settings.Default.PathPrograma + @"\" + "PPFheader.txt").ToList();
             header[5] += numCampos.ToString();
@@ -40,10 +41,24 @@ namespace CalcIndep_Carpeta
             header[13] += paciente.Id;
             header[15] += DateTime.Today.ToString("ddMMyyyy");
             header[16] += medico;
-            header[19] += equipo(plan.Beams.Where(b=>!b.IsSetupField).First());
+            header[19] += equipoSitra(plan);
             return header;
         }
 
+        public static string EnergiaMaximaPlan(PlanSetup plan)
+        {
+            var campos = plan.Beams.Where(b => !b.IsSetupField);
+            Beam primerCampo = campos.First();
+            var energias = campos.Select(c => c.EnergyModeDisplayName).ToList();
+            if (energias.Distinct().Count()>1)
+            {
+                return energias.OrderByDescending(s => int.Parse(s.Substring(0, s.Length - 1))).FirstOrDefault();
+            }
+            else
+            {
+                return energias.First();
+            }
+        }
         public static List<string> escribirCampo(Beam campo, PlanSetup plan, List<string> campoPPF)
         {
             double sumaPesos = 0;
@@ -197,10 +212,78 @@ namespace CalcIndep_Carpeta
             }
         }
 
-        public static string equipo(Beam campo)
+        public static string equipoSitra(PlanSetup plan)
         {
-            string equipoString = "";
-            if (campo.TreatmentUnit.Id == "Equipo1")
+            Beam campo = plan.Beams.Where(b => !b.IsSetupField).First();
+            Equipo equipo = Equipo.seleccionarEquipo(campo.TreatmentUnit.Id);
+            string equipoSitra = equipo.PrefijoSitra;
+            string energia = EnergiaMaximaPlan(plan);
+            
+            if (energia.Contains("X"))
+            {
+                if (equipo.Centro== "San Justo")
+                {
+                    equipoSitra += "_FOTONES";
+                }
+                else
+                {
+                    equipoSitra += "_Fotones";
+                }
+                if(energia.Contains("6"))
+                {
+                    equipoSitra += "_06MV";
+                }
+                else if (energia.Contains("10"))
+                {
+                    equipoSitra += "_10MV";
+                }
+                else if (energia.Contains("15"))
+                {
+                    equipoSitra += "_15MV";
+                }
+            }
+            else
+            {
+                equipoSitra += "_Electrones";
+                if (energia.Contains("6"))
+                {
+                    equipoSitra += "_06MeV";
+                }
+                else if (energia.Contains("9"))
+                {
+                    equipoSitra += "_09MeV";
+                }
+                else if (energia.Contains("12"))
+                {
+                    equipoSitra += "_12MeV";
+                }
+            }
+        
+            /*string equipoString = "";
+            if (campo.TreatmentUnit.Id == "Varian-600C")
+                equipoString += "CASTELAR_EQ2_Fotones_06MV";
+            else if(campo.TreatmentUnit.Id == "CRC_EQ1")
+            {
+                equipoString += "CASTELAR_EQ1";
+                if (campo.EnergyModeDisplayName == "6X")
+                {
+                    equipoString += "Fotones_06MV";
+                }
+                else if (campo.EnergyModeDisplayName == "6E")
+                {
+                    equipoString += "Electrones_06MeV";
+                }
+                else if (campo.EnergyModeDisplayName == "9E")
+                {
+                    equipoString += "Electrones_09MeV";
+                }
+                else if (campo.EnergyModeDisplayName == "12E")
+                {
+                    equipoString += "Electrones_12MeV";
+                }
+            }
+
+            else if (campo.TreatmentUnit.Id == "Equipo1")
             {
                 equipoString += "MEVA_EQ1_Fotones_06MV";
             }
@@ -238,7 +321,7 @@ namespace CalcIndep_Carpeta
                 else if (campo.EnergyModeDisplayName == "20E")
                 {
                     equipoString += "Electrones_20MeV";
-                }*/
+                }
 
             }
             else if (campo.TreatmentUnit.Id == "D-2300CD")
@@ -317,12 +400,22 @@ namespace CalcIndep_Carpeta
             {
                 equipoString += "QUILMES_Fotones_06MV";
             }
-            return equipoString;
+             
+            else if (campo.TreatmentUnit.Id == "6oo C/D")
+            {
+                equipoString += "SANJUSTO_EQ1_FOTONES_06MV";
+            } 
+            else if (campo.TreatmentUnit.Id == "Varian 21 EX")
+            {
+                equipoString += "SANJUSTO_EQ2_FOTONES_06MV";
+            } */
+            return equipoSitra;
 
         }
         public static bool EquipoEsIEC(Beam campo)
         {
-            return equipo(campo).Contains("MEDRANO") || equipo(campo).Contains("EQ3") || equipo(campo).Contains("QUILMES");
+            return Equipo.seleccionarEquipo(campo.TreatmentUnit.Id).EsNormaIEC;
+            //return equipoSitra(campo).Contains("MEDRANO") || equipoSitra(campo).Contains("EQ3") || equipoSitra(campo).Contains("QUILMES");
         }
 
         public static VVector restaVectores(VVector v1, VVector v2)
@@ -334,6 +427,9 @@ namespace CalcIndep_Carpeta
             return resta;
         }
     }
+
+   
+
 
 
 }
