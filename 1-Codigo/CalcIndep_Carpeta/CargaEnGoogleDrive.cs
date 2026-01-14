@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
-using Google.Apis.Services;
-using System.Threading;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalcIndep_Carpeta
@@ -24,31 +25,72 @@ namespace CalcIndep_Carpeta
 
         public static void SubirADriveOGuardarLocal(List<object> textoAInsertar, string Equipo)
         {
-            try
+            if(EsEntornoCitrix())
             {
-                using (Ping p1 = new Ping())
-                {
-                    // Importante: Send puede lanzar una excepción antes de retornar un valor
-                    PingReply PR = p1.Send("8.8.8.8", 2000); // Usar IP de Google es más rápido que DNS
-
-                    if (PR.Status != IPStatus.Success)
-                    {
-                        //MessageBox.Show("No se puede conectar con Google Drive. Estado: " + PR.Status);
-                        GuardarEnArchivoLocal(textoAInsertar, Equipo);
-                    }
-                    SubirADrive(textoAInsertar, Equipo);
-                }
+                GuardarEnArchivoLocal(textoAInsertar, Equipo);
             }
-            catch (Exception ex)
+            else if (TieneAccesoAGoogle())
             {
-                // Esto atrapará el error de "No hay internet" o "DNS no resuelto"
-                //MessageBox.Show("Sin acceso a la red. Iniciando modo offline...\nDetalle: " + ex.Message);
-
-                // AQUÍ ES DONDE LLAMAS A TU NUEVA FUNCIÓN DE GUARDADO LOCAL
-                //GuardarEnArchivoLocal(textoAInsertar, Equipo);
+                //MessageBox.Show("Tiene acceso a google");
+                SubirADrive(textoAInsertar, Equipo);
+            }
+            else
+            {
+                GuardarEnArchivoLocal(textoAInsertar, Equipo);
+                //MessageBox.Show("No tiene acceso a google");
             }
         }
 
+        public static bool EsEntornoCitrix()
+        {
+            // 1. Verificar la variable SESSIONNAME
+            string sessionName = Environment.GetEnvironmentVariable("SESSIONNAME");
+            if (!string.IsNullOrEmpty(sessionName) && sessionName.ToUpper().StartsWith("ICA"))
+            {
+                return true;
+            }
+
+            // 2. Verificar si existe la variable CLIENTNAME (solo existe en sesiones remotas)
+            string clientName = Environment.GetEnvironmentVariable("CLIENTNAME");
+            if (!string.IsNullOrEmpty(clientName))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TieneAccesoAGoogle()
+        {
+            try
+            {
+                // Intentamos resolver el dominio de Google Sheets
+                // Si no hay internet/DNS, esto lanzará una excepción inmediatamente
+                IPAddress[] addresslist = Dns.GetHostAddresses("sheets.googleapis.com");
+
+                if (addresslist.Length > 0)
+                {
+                    //MessageBox.Show("AddressList > 0");
+                    // Opcional: Intentar una conexión rápida por el puerto 443 (HTTPS)
+                    using (var client = new TcpClient())
+                    {
+                        var result = client.BeginConnect("sheets.googleapis.com", 443, null, null);
+                        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2)); // Timeout de 2 seg
+                        /*if (success)
+                        {
+                            MessageBox.Show("Conexion success");
+                        }*/
+                        return success;
+                    }
+                }
+                return false;
+            }
+            catch
+            {
+                // Si no pudo resolver el nombre o no hubo conexión, devolvemos false
+                return false;
+            }
+        }
         private static void GuardarEnArchivoLocal(List<object> textoAInsertar, string equipo)
         {
             // Generar un nombre único para cada envío
